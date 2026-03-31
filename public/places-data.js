@@ -6,8 +6,8 @@
 window.WANDER_PLACES = [
   {
     id: "phu-quoc", name: "Phú Quốc", region: "Kiên Giang",
-    tags: ["biển","ẩm thực","nghỉ dưỡng"], budget: 3, pace: "vua",
-    habits: ["gia đình","cặp đôi","đi sớm"], interests: ["biển","resort","hải sản","chụp ảnh"],
+    tags: ["biển", "ẩm thực", "nghỉ dưỡng"], budget: 3, pace: "vua",
+    habits: ["gia đình", "cặp đôi", "đi sớm"], interests: ["biển", "resort", "hải sản", "chụp ảnh"],
     meta: "Biển xanh, hoàng hôn & hải sản tươi", top: true,
     text: "Đảo ngọc Phú Quốc với dải cát trắng mịn, resort cao cấp trải dài, hệ sinh thái biển đa dạng cùng chợ đêm sầm uất và làng chài truyền thống.",
     image: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80",
@@ -22,8 +22,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "hoi-an", name: "Hội An", region: "Quảng Nam",
-    tags: ["văn hóa","ẩm thực"], budget: 2, pace: "cham",
-    habits: ["cặp đôi","đi một mình","cú đêm"], interests: ["phố cổ","ẩm thực","làng nghề","UNESCO"],
+    tags: ["văn hóa", "ẩm thực"], budget: 2, pace: "cham",
+    habits: ["cặp đôi", "đi một mình", "cú đêm"], interests: ["phố cổ", "ẩm thực", "làng nghề", "UNESCO"],
     meta: "Phố cổ đèn lồng & Di sản văn hóa UNESCO", top: true,
     text: "Hội An là di sản văn hóa thế giới UNESCO, đặc trưng bởi những nếp nhà cổ kính sơn vàng và sông Hoài lấp lánh hoa đăng về đêm.",
     image: "https://images.unsplash.com/photo-1598970434795-0c54fe7c0648?w=800&q=80",
@@ -38,8 +38,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "sa-pa", name: "Sa Pa", region: "Lào Cai",
-    tags: ["leo núi","văn hóa","ẩm thực"], budget: 2, pace: "nhanh",
-    habits: ["đi một mình","gia đình","đi sớm"], interests: ["trekking","bản làng","ruộng bậc thang","check-in"],
+    tags: ["leo núi", "văn hóa", "ẩm thực"], budget: 2, pace: "nhanh",
+    habits: ["đi một mình", "gia đình", "đi sớm"], interests: ["trekking", "bản làng", "ruộng bậc thang", "check-in"],
     meta: "Thiên đường mây & Ruộng bậc thang kỳ vĩ", top: true,
     text: "Sa Pa chinh phục mọi du khách với đỉnh Fansipan hùng vĩ, ruộng bậc thang uốn lượn và bản sắc văn hóa dân tộc rực rỡ sắc màu Tây Bắc.",
     image: "https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80",
@@ -54,8 +54,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "ha-long", name: "Vịnh Hạ Long", region: "Quảng Ninh",
-    tags: ["biển","văn hóa","nghỉ dưỡng"], budget: 3, pace: "vua",
-    habits: ["cặp đôi","gia đình"], interests: ["du thuyền","kayak","UNESCO","check-in"],
+    tags: ["biển", "văn hóa", "nghỉ dưỡng"], budget: 3, pace: "vua",
+    habits: ["cặp đôi", "gia đình"], interests: ["du thuyền", "kayak", "UNESCO", "check-in"],
     meta: "Kỳ quan thiên nhiên thế giới 2 lần UNESCO", top: true,
     text: "Hàng nghìn đảo đá vôi sừng sững giữa làn nước ngọc bích — Vịnh Hạ Long là Di sản Thiên nhiên Thế giới và biểu tượng du lịch Việt Nam.",
     image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
@@ -70,11 +70,11 @@ window.WANDER_PLACES = [
   },
   {
     id: "ha-noi", name: "Hà Nội", region: "Thủ đô",
-    tags: ["ẩm thực","văn hóa"], budget: 1, pace: "cham",
-    habits: ["cú đêm","đi một mình","cặp đôi"], interests: ["phố cổ","cà phê","bảo tàng","ẩm thực đường phố"],
+    tags: ["ẩm thực", "văn hóa"], budget: 1, pace: "cham",
+    habits: ["cú đêm", "đi một mình", "cặp đôi"], interests: ["phố cổ", "cà phê", "bảo tàng", "ẩm thực đường phố"],
     meta: "Thủ đô nghìn năm văn hiến & Ẩm thực đường phố", top: false,
     text: "Hà Nội pha trộn lịch sử nghìn năm với nhịp sống hiện đại, nổi danh toàn cầu bởi phở, bún chả và cà phê trứng độc đáo.",
-    image: "https://images.unsplash.com/photo-1502602898657-3e9172f29b78?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1555921015-5532091f6026?w=800&q=80",
     lat: 21.0285, lng: 105.8542,
     transportTips: "Dùng Grab hoặc xe ôm app. Phố cổ nên đi bộ; tránh giờ cao điểm 7-9h và 17-19h.",
     activities: [
@@ -86,8 +86,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "da-lat", name: "Đà Lạt", region: "Lâm Đồng",
-    tags: ["leo núi","ẩm thực","nghỉ dưỡng"], budget: 2, pace: "cham",
-    habits: ["cặp đôi","gia đình"], interests: ["hoa","cà phê","thiên nhiên","check-in"],
+    tags: ["leo núi", "ẩm thực", "nghỉ dưỡng"], budget: 2, pace: "cham",
+    habits: ["cặp đôi", "gia đình"], interests: ["hoa", "cà phê", "thiên nhiên", "check-in"],
     meta: "Thành phố ngàn hoa & Khí hậu mát mẻ quanh năm", top: true,
     text: "Đà Lạt trên cao nguyên Langbiang nổi tiếng với vườn hoa bát ngát, đồi chè xanh mướt, kiến trúc Pháp cổ điển và cà phê specialty.",
     image: "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=800&q=80",
@@ -102,8 +102,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "da-nang", name: "Đà Nẵng", region: "Đà Nẵng",
-    tags: ["biển","ẩm thực","văn hóa"], budget: 2, pace: "vua",
-    habits: ["gia đình","cặp đôi"], interests: ["biển","cầu Vàng","ẩm thực","resort"],
+    tags: ["biển", "ẩm thực", "văn hóa"], budget: 2, pace: "vua",
+    habits: ["gia đình", "cặp đôi"], interests: ["biển", "cầu Vàng", "ẩm thực", "resort"],
     meta: "Thành phố đáng sống & Biển Mỹ Khê tuyệt đẹp", top: false,
     text: "Đà Nẵng được mệnh danh thành phố đáng sống nhất Việt Nam với biển Mỹ Khê trong xanh, Bà Nà Hills kỳ thú và Cầu Vàng nổi tiếng thế giới.",
     image: "https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800&q=80",
@@ -118,8 +118,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "nha-trang", name: "Nha Trang", region: "Khánh Hòa",
-    tags: ["biển","ẩm thực"], budget: 2, pace: "vua",
-    habits: ["cặp đôi","gia đình","cú đêm"], interests: ["lặn","đảo","resort","ẩm thực"],
+    tags: ["biển", "ẩm thực"], budget: 2, pace: "vua",
+    habits: ["cặp đôi", "gia đình", "cú đêm"], interests: ["lặn", "đảo", "resort", "ẩm thực"],
     meta: "Thành phố biển & San hô đa dạng nhất Việt Nam", top: false,
     text: "Nha Trang sở hữu vùng biển trong xanh với hệ thống rạn san hô phong phú, chuỗi đảo hoang sơ và ẩm thực biển cực kỳ đặc sắc.",
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80",
@@ -134,11 +134,11 @@ window.WANDER_PLACES = [
   },
   {
     id: "can-tho", name: "Cần Thơ", region: "TP. Cần Thơ",
-    tags: ["văn hóa","ẩm thực"], budget: 1, pace: "cham",
-    habits: ["đi một mình","gia đình"], interests: ["miệt vườn","chợ nổi","sông nước","ẩm thực"],
+    tags: ["văn hóa", "ẩm thực"], budget: 1, pace: "cham",
+    habits: ["đi một mình", "gia đình"], interests: ["miệt vườn", "chợ nổi", "sông nước", "ẩm thực"],
     meta: "Thủ phủ miền Tây & Chợ nổi Cái Răng", top: false,
     text: "Cần Thơ là trái tim đồng bằng sông Cửu Long, nơi văn hóa sông nước, chợ nổi tấp nập và vườn cây ăn trái xanh mát tạo nên bức tranh miền Tây đặc sắc.",
-    image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&q=80",
     lat: 10.0452, lng: 105.7469,
     transportTips: "Xe limousine từ TP.HCM ~3-4h. Chợ nổi 5h30-7h — nghỉ gần bến phà để kịp giờ.",
     activities: [
@@ -150,8 +150,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "ninh-binh", name: "Ninh Bình", region: "Ninh Bình",
-    tags: ["leo núi","văn hóa"], budget: 1, pace: "cham",
-    habits: ["gia đình","cặp đôi","đi một mình"], interests: ["trekking","hang động","UNESCO","chùa"],
+    tags: ["leo núi", "văn hóa"], budget: 1, pace: "cham",
+    habits: ["gia đình", "cặp đôi", "đi một mình"], interests: ["trekking", "hang động", "UNESCO", "chùa"],
     meta: "Vịnh Hạ Long trên cạn & Di sản Tràng An UNESCO", top: true,
     text: "Ninh Bình là 'Vịnh Hạ Long trên cạn' với hệ thống núi đá vôi, sông nước và hang động tuyệt đẹp. Tràng An được UNESCO công nhận là Di sản Thế giới kép.",
     image: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80",
@@ -166,8 +166,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "hue", name: "Huế", region: "Thừa Thiên - Huế",
-    tags: ["văn hóa","ẩm thực"], budget: 1, pace: "cham",
-    habits: ["cặp đôi","đi một mình"], interests: ["cố đô","lăng tẩm","ẩm thực cung đình","UNESCO"],
+    tags: ["văn hóa", "ẩm thực"], budget: 1, pace: "cham",
+    habits: ["cặp đôi", "đi một mình"], interests: ["cố đô", "lăng tẩm", "ẩm thực cung đình", "UNESCO"],
     meta: "Cố đô lăng tẩm & Ẩm thực Cung đình tinh tế", top: false,
     text: "Cố đô Huế gắn liền với nhà Nguyễn, ẩn chứa lăng tẩm nguy nga, cung đình hoành tráng và nền ẩm thực cung đình tinh tế độc nhất vô nhị.",
     image: "https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80",
@@ -182,8 +182,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "ha-giang", name: "Hà Giang", region: "Hà Giang",
-    tags: ["leo núi","văn hóa"], budget: 1, pace: "nhanh",
-    habits: ["đi một mình","đi sớm"], interests: ["trekking","moto","bản làng","check-in"],
+    tags: ["leo núi", "văn hóa"], budget: 1, pace: "nhanh",
+    habits: ["đi một mình", "đi sớm"], interests: ["trekking", "moto", "bản làng", "check-in"],
     meta: "Cung đường đèo hiểm trở & Hoa tam giác mạch", top: true,
     text: "Tỉnh địa đầu Tổ quốc Hà Giang chinh phục phượt thủ bằng đèo Mã Pí Lèng huyền thoại, Đồng Văn Cổ Trấn cổ kính và mùa hoa tam giác mạch tím ngát tháng 10-11.",
     image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80",
@@ -198,11 +198,11 @@ window.WANDER_PLACES = [
   },
   {
     id: "con-dao", name: "Côn Đảo", region: "Bà Rịa - Vũng Tàu",
-    tags: ["biển","nghỉ dưỡng"], budget: 3, pace: "cham",
-    habits: ["cặp đôi","đi một mình"], interests: ["biển hoang","rùa biển","lịch sử","lặn biển"],
+    tags: ["biển", "nghỉ dưỡng"], budget: 3, pace: "cham",
+    habits: ["cặp đôi", "đi một mình"], interests: ["biển hoang", "rùa biển", "lịch sử", "lặn biển"],
     meta: "Thiên đường biển hoang nguyên sơ & Di tích lịch sử", top: true,
     text: "Côn Đảo còn nguyên vẻ hoang sơ với bãi biển vắng tuyệt đẹp, vườn quốc gia nguyên sinh và trải nghiệm độc đáo xem rùa biển đẻ trứng đêm hè.",
-    image: "https://images.unsplash.com/photo-1533235371131-419163273eef?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1559592413-7cec096d7b88?w=800&q=80",
     lat: 8.6914, lng: 106.6061,
     transportTips: "Bay từ TP.HCM hoặc Cần Thơ ~50 phút. Thuê xe máy trên đảo. Mùa rùa đẻ trứng: tháng 5-10.",
     activities: [
@@ -214,8 +214,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "quy-nhon", name: "Quy Nhơn", region: "Bình Định",
-    tags: ["biển","văn hóa"], budget: 1, pace: "cham",
-    habits: ["đi một mình","cặp đôi"], interests: ["biển vắng","Chăm Pa","hải sản rẻ","bình yên"],
+    tags: ["biển", "văn hóa"], budget: 1, pace: "cham",
+    habits: ["đi một mình", "cặp đôi"], interests: ["biển vắng", "Chăm Pa", "hải sản rẻ", "bình yên"],
     meta: "Biển đẹp yên bình & Tháp Chăm nghìn năm tuổi", top: false,
     text: "Quy Nhơn là viên ngọc ẩn của Việt Nam — biển Kỳ Co trong vắt như ngọc bích, tháp Chăm cổ kính và ẩm thực hải sản siêu tươi giá bình dân.",
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=800&q=80",
@@ -230,8 +230,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "phan-thiet", name: "Mũi Né – Phan Thiết", region: "Bình Thuận",
-    tags: ["biển","ẩm thực","nghỉ dưỡng"], budget: 2, pace: "cham",
-    habits: ["cặp đôi","gia đình"], interests: ["biển","đồi cát","kitesurfing","resort"],
+    tags: ["biển", "ẩm thực", "nghỉ dưỡng"], budget: 2, pace: "cham",
+    habits: ["cặp đôi", "gia đình"], interests: ["biển", "đồi cát", "kitesurfing", "resort"],
     meta: "Đồi cát đỏ kỳ ảo & Thiên đường kite-surfing", top: false,
     text: "Mũi Né nổi bật với đồi cát đỏ và trắng kỳ ảo, bãi biển ít người và gió lộng quanh năm — thiên đường kite-surfing bậc nhất Việt Nam.",
     image: "https://images.unsplash.com/photo-1509233725247-49e657c54213?w=800&q=80",
@@ -246,8 +246,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "tphcm", name: "TP. Hồ Chí Minh", region: "TP. Hồ Chí Minh",
-    tags: ["ẩm thực","văn hóa"], budget: 2, pace: "nhanh",
-    habits: ["cú đêm","gia đình","đi một mình"], interests: ["mua sắm","ẩm thực","lịch sử","nightlife"],
+    tags: ["ẩm thực", "văn hóa"], budget: 2, pace: "nhanh",
+    habits: ["cú đêm", "gia đình", "đi một mình"], interests: ["mua sắm", "ẩm thực", "lịch sử", "nightlife"],
     meta: "Thành phố năng động nhất Việt Nam", top: false,
     text: "TP.HCM bừng sáng liên tục với ẩm thực đường phố phong phú, bảo tàng lịch sử sâu sắc và đời sống văn hóa cực kỳ đa dạng và hiện đại.",
     image: "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80",
@@ -262,8 +262,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "buon-ma-thuot", name: "Buôn Ma Thuột", region: "Đắk Lắk",
-    tags: ["văn hóa","ẩm thực"], budget: 1, pace: "cham",
-    habits: ["đi một mình","gia đình"], interests: ["cà phê","voi","thác","bản làng"],
+    tags: ["văn hóa", "ẩm thực"], budget: 1, pace: "cham",
+    habits: ["đi một mình", "gia đình"], interests: ["cà phê", "voi", "thác", "bản làng"],
     meta: "Thủ đô Cà phê Việt Nam & Văn hóa cồng chiêng", top: false,
     text: "Buôn Ma Thuột là thủ phủ cà phê nổi tiếng thế giới, nơi đất đỏ bazan nuôi dưỡng cà phê Robusta hảo hạng cùng văn hóa cồng chiêng Tây Nguyên UNESCO.",
     image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80",
@@ -278,8 +278,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "tam-dao", name: "Tam Đảo", region: "Vĩnh Phúc",
-    tags: ["leo núi","nghỉ dưỡng"], budget: 1, pace: "cham",
-    habits: ["gia đình","cặp đôi"], interests: ["núi","sương mù","nghỉ dưỡng","thiên nhiên"],
+    tags: ["leo núi", "nghỉ dưỡng"], budget: 1, pace: "cham",
+    habits: ["gia đình", "cặp đôi"], interests: ["núi", "sương mù", "nghỉ dưỡng", "thiên nhiên"],
     meta: "Núi sương mù lãng mạn chỉ 80km từ Hà Nội", top: false,
     text: "Tam Đảo là ốc đảo xanh mát với thị trấn núi bồng bềnh trong mây, kiến trúc Pháp cổ điển, rừng nguyên sinh và khí hậu mát mẻ quanh năm.",
     image: "https://images.unsplash.com/photo-1540202404-a2f29016b523?w=800&q=80",
@@ -294,8 +294,8 @@ window.WANDER_PLACES = [
   },
   {
     id: "mui-ne-fantasy", name: "Làng Chài Cổ Thạch", region: "Bình Thuận",
-    tags: ["biển","văn hóa"], budget: 1, pace: "cham",
-    habits: ["đi một mình","cặp đôi"], interests: ["biển đá","nhiếp ảnh","yên tĩnh","bình minh"],
+    tags: ["biển", "văn hóa"], budget: 1, pace: "cham",
+    habits: ["đi một mình", "cặp đôi"], interests: ["biển đá", "nhiếp ảnh", "yên tĩnh", "bình minh"],
     meta: "Bãi đá san hô huyền bí & Bình minh nhiếp ảnh", top: false,
     text: "Cổ Thạch là bí mật ít người biết với bãi đá cuội và san hô kỳ lạ lộ ra khi nước ròng, làng chài mộc mạc và bình minh rực rỡ được nhiếp ảnh gia săn tìm.",
     image: "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?w=800&q=80",
@@ -307,5 +307,85 @@ window.WANDER_PLACES = [
       { dayPart: "Tối", title: "Hoàng hôn đỏ rực tuyệt đẹp tại bãi đá", tip: "Trời quang cực đẹp; mang máy ảnh tốt để ghi lại khoảnh khắc." }
     ],
     sourceName: "Cổng TTĐT Tỉnh Bình Thuận", sourceUrl: "https://binhthuan.gov.vn/"
+  },
+  {
+    id: "sapa-fansipan", name: "Đỉnh Fansipan", region: "Lào Cai",
+    tags: ["leo núi", "văn hóa"], budget: 2, pace: "nhanh",
+    habits: ["đi một mình", "gia đình"], interests: ["trekking", "cáp treo", "săn mây", "đỉnh núi"],
+    meta: "Nóc nhà Đông Dương 3.143m", top: true,
+    text: "Đỉnh núi cao nhất Việt Nam và bán đảo Đông Dương. Lên bằng cáp treo ngắm biển mây hùng vĩ hoặc trekking chinh phục đỉnh cao.",
+    image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&q=80",
+    lat: 22.3045, lng: 103.7719,
+    transportTips: "Cáp treo Sun World Fansipan Legend lên đỉnh chỉ 15 phút. Xuất phát từ Sa Pa trung tâm.",
+    activities: [
+      { dayPart: "Sáng", title: "Đi cáp treo lúc bình minh", tip: "Mây phủ sáng sớm — có thể trúng khoảnh khắc biển mây cực đẹp." },
+      { dayPart: "Trưa", title: "Ăn buffet tại Ga Hoàng Liên", tip: "Vé cáp treo combo buffet thường rẻ hơn mua lẻ." },
+      { dayPart: "Chiều", title: "Viếng quần thể tâm linh trên đỉnh", tip: "Đại tượng Phật A Di Đà lớn nhất VN ở độ cao 3.143m." }
+    ],
+    sourceName: "Sun World Fansipan Legend", sourceUrl: "https://fansipanlegend.sunworld.vn/"
+  },
+  {
+    id: "moc-chau", name: "Mộc Châu", region: "Sơn La",
+    tags: ["văn hóa", "nghỉ dưỡng"], budget: 1, pace: "cham",
+    habits: ["cặp đôi", "gia đình"], interests: ["đồi chè", "hái dâu", "bản làng", "rừng thông"],
+    meta: "Thảo nguyên xanh mát & Hoa mận trắng tháng Giêng", top: false,
+    text: "Mộc Châu quyến rũ với đồi chè Trái Tim, rừng thông Bản Áng, thác Dải Yếm và những vườn mận nở trắng muốt khi xuân về.",
+    image: "https://images.unsplash.com/photo-1467377791767-c929b5dc9a23?w=800&q=80",
+    lat: 20.8542, lng: 104.6465,
+    transportTips: "Xe limousine từ Hà Nội mất khoảng 4 giờ qua quốc lộ 6. Mùa hoa mận đẹp nhất vào tháng 1-2.",
+    activities: [
+      { dayPart: "Sáng", title: "Tham quan Đồi Chè Trái Tim", tip: "Nắng sớm chiếu lên lá chè đọng sương — góc ảnh cực ăn hình." },
+      { dayPart: "Chiều", title: "Rừng thông Bản Áng & Hái dâu tây", tip: "Dâu tây ngon nhất mùa lạnh (tháng 1-3); điểm cắm trại tuyệt vời." },
+      { dayPart: "Tối", title: "Thưởng thức Bê chao vỉa hè", tip: "Ghé quán 64 hoặc 70 để thử đặc sản bê chao siêu ngon." }
+    ],
+    sourceName: "Cổng TTĐT Tỉnh Sơn La", sourceUrl: "https://sonla.gov.vn/"
+  },
+  {
+    id: "phong-nha", name: "Phong Nha - Kẻ Bàng", region: "Quảng Bình",
+    tags: ["leo núi", "nghỉ dưỡng"], budget: 2, pace: "nhanh",
+    habits: ["đi một mình", "cặp đôi"], interests: ["hang động", "trekking", "chèo thuyền", "di sản"],
+    meta: "Vương quốc Hang Động & Động Sơn Đoòng lớn nhất TG", top: true,
+    text: "Vườn quốc gia với hơn 300 hang động lớn nhỏ, sông ngầm hùng vĩ. Nơi có động Sơn Đoòng — lớn nhất thế giới — và hàng loạt trải nghiệm phiêu lưu đỉnh cao.",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80",
+    lat: 17.5898, lng: 106.281,
+    transportTips: "Bay đến sân bay Đồng Hới hoặc đi tàu ga Đồng Hới. Thuê xe máy vào thị trấn Phong Nha.",
+    activities: [
+      { dayPart: "Sáng", title: "Khám phá Động Thiên Đường / Động Tiên Sơn", tip: "Mang giày bám; đường đi bộ trong hang dài ít nhất 1.5h." },
+      { dayPart: "Chiều", title: "Zipline & Tắm bùn Sông Chày Hang Tối", tip: "Mặc đồ bơi — trò chơi sông sẽ làm ướt hoàn toàn nhưng rất vui!" },
+      { dayPart: "Tối", title: "Gà nướng chấm muối cheo bên sông Son", tip: "Nhiều quán nướng đặc sản ngon ven bờ sông thơ mộng." }
+    ],
+    sourceName: "Vườn Quốc gia Phong Nha - Kẻ Bàng", sourceUrl: "https://phongnhakebang.vn/"
+  },
+  {
+    id: "pu-luong", name: "Pù Luông", region: "Thanh Hóa",
+    tags: ["leo núi", "văn hóa", "nghỉ dưỡng"], budget: 2, pace: "cham",
+    habits: ["gia đình", "cặp đôi"], interests: ["ruộng bậc thang", "bảo tồn", "nghỉ dưỡng", "chụp ảnh"],
+    meta: "Thiên đường hoang sơ & Resort sinh thái xứ Thanh", top: false,
+    text: "Khu bảo tồn thiên nhiên tuyệt đẹp với các resort sinh thái hòa vào ruộng bậc thang bạt ngàn và nhịp sống thanh bình của người Thái.",
+    image: "https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80",
+    lat: 20.4633, lng: 105.2154,
+    transportTips: "Cách Hà Nội ~4 tiếng ô tô. Đường có đèo hẹp qua Bản Lác - Mai Châu — hỏi tài xế kinh nghiệm.",
+    activities: [
+      { dayPart: "Sáng", title: "Đi bộ Bản Đôn & xem guồng nước", tip: "Guồng nước khổng lồ là góc check-in cực ăn ảnh." },
+      { dayPart: "Chiều", title: "Hồ bơi vô cực ngắm ruộng bậc thang", tip: "Resort Pu Luong Retreat có hồ bơi tràn bờ view cực đỉnh." },
+      { dayPart: "Tối", title: "Múa xòe & Vịt Cổ Lũng đặc sản", tip: "Vịt Cổ Lũng xương nhỏ thịt chắc, ăn kèm xôi nếp thơm." }
+    ],
+    sourceName: "Cổng TTĐT Tỉnh Thanh Hóa", sourceUrl: "https://thanhhoa.gov.vn/"
+  },
+  {
+    id: "phu-yen", name: "Phú Yên", region: "Phú Yên",
+    tags: ["biển", "văn hóa"], budget: 1, pace: "cham",
+    habits: ["đi một mình", "gia đình"], interests: ["biển đá", "yên tĩnh", "nhiếp ảnh", "ẩm thực"],
+    meta: "Xứ sở Hoa Vàng Trên Cỏ Xanh & Gành Đá Đĩa", top: true,
+    text: "Phú Yên hút hồn bằng Gành Đá Đĩa kỳ lạ, Mũi Điện — điểm đón bình minh đầu tiên nhất Việt Nam, và những bãi biển xanh ngắt còn nguyên vẹn.",
+    image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80",
+    lat: 13.0886, lng: 109.3243,
+    transportTips: "Sân bay Tuy Hòa cách trung tâm chỉ 5-7km. Thuê xe máy để tự do khám phá dọc biển.",
+    activities: [
+      { dayPart: "Sáng", title: "Đón bình minh ở Mũi Điện cực Đông", tip: "Có mặt trước 5h sáng; có đoạn đi bộ lên ngọn hải đăng lịch sử." },
+      { dayPart: "Chiều", title: "Gành Đá Đĩa & Bãi Xép huyền thoại", tip: "Nắng chói — mang ô/dù. Vé tham quan rất rẻ." },
+      { dayPart: "Tối", title: "Sashimi & Mắt cá ngừ đại dương", tip: "Cá ngừ Phú Yên là đặc sản nổi tiếng cả nước — đừng bỏ qua." }
+    ],
+    sourceName: "Cổng TTĐT Tỉnh Phú Yên", sourceUrl: "https://phuyen.gov.vn/"
   }
 ];

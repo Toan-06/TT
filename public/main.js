@@ -213,15 +213,38 @@
     var m = document.querySelector('[data-modal="' + name + '"]');
     if (!m) return;
     m.hidden = false;
-    if (backdrop) backdrop.hidden = false;
-    document.documentElement.style.overflow = "hidden";
+    
+    var useBackdrop = true;
+
+    if (m.classList.contains('slide-drawer')) {
+      requestAnimationFrame(function() {
+        m.classList.add('is-open');
+      });
+      // Don't lock scroll for slide relative drawers, keep it multitasking
+      if (name === 'place') {
+        useBackdrop = false; // no backdrop for place to allow map scrolling
+      } else {
+        document.documentElement.style.overflow = "hidden";
+      }
+    } else {
+      document.documentElement.style.overflow = "hidden";
+    }
+
+    if (backdrop && useBackdrop) backdrop.hidden = false;
     var closeBtn = m.querySelector("[data-modal-close]");
     if (closeBtn) closeBtn.focus();
   }
 
   function closeModals() {
     document.querySelectorAll("[data-modal]").forEach(function (m) {
-      m.hidden = true;
+      if (m.classList.contains('slide-drawer')) {
+        m.classList.remove('is-open');
+        setTimeout(function() {
+          if (!m.classList.contains('is-open')) m.hidden = true;
+        }, 350);
+      } else {
+        m.hidden = true;
+      }
     });
     if (backdrop) backdrop.hidden = true;
     document.documentElement.style.overflow = "";

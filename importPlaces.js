@@ -26,7 +26,7 @@ const PLACES = [
     interests: ["phố cổ", "ẩm thực", "làng nghề", "UNESCO"],
     meta: "Phố cổ đèn lồng & di sản UNESCO",
     text: "Đi bộ phố cổ, thử cao lầu và workshop gốm.",
-    image: "https://images.unsplash.com/photo-1528127269322-539801943592?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1598970434795-0c54fe7c0648?w=800&q=80",
     lat: 15.8801, lng: 108.338, top: true,
     transportTips: "Bay Đà Nẵng rồi xe buýt/xe máy ~45 phút; phố cổ đi bộ là lý tưởng.",
     activities: [
@@ -58,7 +58,7 @@ const PLACES = [
     interests: ["du thuyền", "kayak", "UNESCO", "check-in"],
     meta: "Di sản thiên nhiên thế giới",
     text: "Du thuyền ngắm đảo đá vôi, kayak và hang động.",
-    image: "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
     lat: 20.9101, lng: 107.1839, top: true,
     transportTips: "Ô tô từ Hà Nội ~2.5–3h; chọn tàu/ghép đoàn có hợp đồng rõ ràng.",
     activities: [
@@ -74,7 +74,7 @@ const PLACES = [
     interests: ["phố cổ", "cà phê", "bảo tàng", "ẩm thực đường phố"],
     meta: "36 phố phường & ẩm thực đường phố",
     text: "Phố cổ, hồ Hoàn Kiếm và tour ẩm thực đêm.",
-    image: "https://images.unsplash.com/photo-1590502593741-c7d1984a1893?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1555921015-5532091f6026?w=800&q=80",
     lat: 21.0285, lng: 105.8542, top: false,
     transportTips: "Grab/ba gác nội thành; tránh giờ cao điểm phố cổ bằng xe máy lần đầu.",
     activities: [
@@ -122,7 +122,7 @@ const PLACES = [
     interests: ["lặn", "đảo", "resort", "ẩm thực"],
     meta: "Thành phố biển & đảo nhỏ",
     text: "VinWonders, đảo Hòn Mun, bún sứa & hải sản.",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1473773508845-188df298d2d1?w=800&q=80",
     lat: 12.2388, lng: 109.1967, top: false,
     transportTips: "Bay Cam Ranh, xe bus/shuttle vào trung tâm; tắm biển chú ý cờ an toàn.",
     activities: [
@@ -138,7 +138,7 @@ const PLACES = [
     interests: ["miệt vườn", "chợ nổi", "sông nước", "ẩm thực"],
     meta: "Chợ nổi Cái Răng & miệt vườn",
     text: "Sông Hậu, chợ nổi sáng sớm và bánh cống đường quê.",
-    image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&q=80",
     lat: 10.0452, lng: 105.7469, top: false,
     transportTips: "Từ TP.HCM ~3–4h; chợ nổi 5h30–7h — nghỉ gần bến nếu muốn kịp giờ.",
     activities: [
@@ -218,7 +218,7 @@ const PLACES = [
     interests: ["biển hoang", "rùa biển", "lịch sử", "lặn biển"],
     meta: "Thiên đường biển hoang sơ",
     text: "Rùa biển đẻ trứng, lặn ngắm san hô và nhà tù lịch sử.",
-    image: "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1559592413-7cec096d7b88?w=800&q=80",
     lat: 8.6914, lng: 106.6061, top: true,
     transportTips: "Bay từ TP.HCM ~50 phút; thuê xe máy trên đảo; mùa rùa: tháng 5–10.",
     activities: [
@@ -266,7 +266,7 @@ const PLACES = [
     interests: ["cà phê", "voi", "thác", "bản làng"],
     meta: "Thủ đô cà phê & văn hóa Tây Nguyên",
     text: "Buôn làng Ê Đê, thác Gia Long và cà phê chồn nổi tiếng.",
-    image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80",
     lat: 12.6797, lng: 108.0506, top: false,
     transportTips: "Bay thẳng hoặc xe khách từ TP.HCM ~8h; thuê xe máy thăm vùng ngoại ô.",
     activities: [
@@ -305,6 +305,86 @@ const PLACES = [
       { dayPart: "Sáng", title: "Chụp ảnh bãi đá lúc bình minh & nước ròng", tip: "Dậy 4h30 để có mặt lúc 5h; đi dép xỉn chống trơn." },
       { dayPart: "Chiều", title: "Ghé làng chài Cổ Thạch mua hải sản", tip: "Mang mát theo uống; ít quán ăn khu này." },
       { dayPart: "Tối", title: "Bộ sưu tầm ảnh hoàng hôn tại bãi", tip: "Trời quang thì cực đẹp; mang máy ảnh tốt." }
+    ]
+  },
+  {
+    id: "sapa-fansipan", name: "Đỉnh Fansipan", region: "Lào Cai",
+    tags: ["leo núi", "văn hóa"], budget: 2, pace: "nhanh",
+    habits: ["đi một mình", "gia đình"],
+    interests: ["trekking", "cáp treo", "săn mây", "đỉnh núi"],
+    meta: "Nóc nhà Đông Dương 3.143m",
+    text: "Đỉnh núi cao nhất Việt Nam và ban đảo Đông Dương. Đi cáp treo ngắm toàn cảnh thung lũng Mường Hoa hoặc trekking thử thách bản thân.",
+    image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&q=80",
+    lat: 22.3045, lng: 103.7719, top: true,
+    transportTips: "Cáp treo Sun World Fansipan Legend là cách dễ dàng nhất để lên đỉnh trong 15 phút.",
+    activities: [
+      { dayPart: "Sáng", title: "Đi cáp treo lúc bình minh", tip: "Mây thường phủ vào sáng sớm, có thể trúng khoảnh khắc biển mây cực đẹp." },
+      { dayPart: "Trưa", title: "Ăn buffet tại Ga Hoàng Liên", tip: "Giá vé cáp treo kết hợp buffet thường rẻ hơn mua lẻ." },
+      { dayPart: "Chiều", title: "Viếng quần thể tâm linh", tip: "Có đại tượng Phật A Di Đà lớn nhất Việt Nam ở độ cao ấn tượng." }
+    ]
+  },
+  {
+    id: "moc-chau", name: "Mộc Châu", region: "Sơn La",
+    tags: ["văn hóa", "nghỉ dưỡng"], budget: 1, pace: "cham",
+    habits: ["cặp đôi", "gia đình"],
+    interests: ["đồi chè", "hái dâu", "bản làng", "rừng thông"],
+    meta: "Thảo nguyên xanh mát, hoa mận trắng",
+    text: "Mộc Châu quyến rũ với đồi chè trái tim, rừng thông bản Áng, thác Dải Yếm và những vườn mận nở trắng muốt khi xuân về.",
+    image: "https://images.unsplash.com/photo-1467377791767-c929b5dc9a23?w=800&q=80",
+    lat: 20.8542, lng: 104.6465, top: false,
+    transportTips: "Xe limousine từ Hà Nội đi Mộc Châu tốn khoảng 4 giờ qua quốc lộ 6.",
+    activities: [
+      { dayPart: "Sáng", title: "Tham quan Đồi Chè Trái Tim", tip: "Nắng sớm chiếu lên lá chè đọng sương cực kỳ ăn ảnh." },
+      { dayPart: "Chiều", title: "Rừng thông Bản Áng & Hái dâu tây", tip: "Điểm cắm trại tuyệt vời, dâu tây ngon nhất vào mùa lạnh (Tháng 1-3)." },
+      { dayPart: "Tối", title: "Thưởng thức Bê chao vỉa hè", tip: "Ghé quán 64 hoặc 70 để thử đặc sản bê chao siêu ngon." }
+    ]
+  },
+  {
+    id: "phong-nha", name: "Phong Nha - Kẻ Bàng", region: "Quảng Bình",
+    tags: ["leo núi", "nghỉ dưỡng"], budget: 2, pace: "nhanh",
+    habits: ["đi một mình", "cặp đôi"],
+    interests: ["hang động", "trekking", "chèo thuyền", "di sản"],
+    meta: "Vương quốc hang động thế giới",
+    text: "Vườn quốc gia với hơn 300 hang động lớn nhỏ, sông ngầm hùng vĩ. Là nơi có động Sơn Đoòng lớn nhất thế giới.",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80",
+    lat: 17.5898, lng: 106.281, top: true,
+    transportTips: "Nên thuê xe máy từ ga Đồng Hới hoặc bay tới sân bay Đồng Hới.",
+    activities: [
+      { dayPart: "Sáng", title: "Khám phá động Tiên Sơn / Động Thiên Đường", tip: "Mang giày cực êm vì khoảng cách đi bộ trong hang động mất ít nhất 1.5h." },
+      { dayPart: "Chiều", title: "Zipline & Tắm bùn tại Sông Chày Hang Tối", tip: "Chuẩn bị đồ bơi vì trò chơi trên sông và lội bùn sẽ làm bạn ướt hoàn toàn." },
+      { dayPart: "Tối", title: "Ăn Gà nướng chấm muối cheo", tip: "Khá nhiều quán nướng cực ngon ven bờ sông Son thơ mộng." }
+    ]
+  },
+  {
+    id: "pu-luong", name: "Pù Luông", region: "Thanh Hóa",
+    tags: ["leo núi", "văn hóa", "nghỉ dưỡng"], budget: 2, pace: "cham",
+    habits: ["gia đình", "cặp đôi"],
+    interests: ["ruộng bậc thang", "bảo tồn", "nghỉ dưỡng", "chụp ảnh"],
+    meta: "Thiên đường hoang sơ xứ Thanh",
+    text: "Khu bảo tồn thiên nhiên tuyệt đẹp với những khu resort sinh thái hòa vào ruộng bậc thang bạt ngàn và nhịp sống thanh bình của người Thái.",
+    image: "https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80",
+    lat: 20.4633, lng: 105.2154, top: false,
+    transportTips: "Cách Hà Nội khoảng 4 tiếng ô tô, đường đi có đèo hơi hẹp đoạn qua Bản Lác - Mai Châu.",
+    activities: [
+      { dayPart: "Sáng", title: "Đi bộ Bản Đôn và xem guồng nước", tip: "Các guồng nước khổng lồ là góc Check-in rất ăn ảnh." },
+      { dayPart: "Chiều", title: "Bơi vô cực ngắm ruộng bậc thang", tip: "Chọn resort có hồ bơi tràn bờ (ví dụ Pu Luong Retreat) để thư giãn trọn vẹn." },
+      { dayPart: "Tối", title: "Múa sạp, múa xòe và Vịt Cổ Lũng", tip: "Đặc sản Vịt Cổ Lũng xương nhỏ thịt chắc, ăn kèm xôi nếp." }
+    ]
+  },
+  {
+    id: "phu-yen", name: "Phú Yên", region: "Phú Yên",
+    tags: ["biển", "văn hóa"], budget: 1, pace: "cham",
+    habits: ["đi một mình", "gia đình"],
+    interests: ["biển đá", "yên tĩnh", "nhiếp ảnh", "ẩm thực"],
+    meta: "Xứ sở hoa vàng trên cỏ xanh",
+    text: "Phú Yên nổi bật với Gành Đá Đĩa kỳ thú, hải đăng Mũi Điện - nơi đón bình minh đầu tiên sớm nhất, cùng những bãi biển xanh ngắt chưa nhiều dấu chân ngươì.",
+    image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80",
+    lat: 13.0886, lng: 109.3243, top: true,
+    transportTips: "Sân bay Tuy Hòa cách trung tâm chỉ 5-7km; thuê xe máy dọc biển rất đẹp.",
+    activities: [
+      { dayPart: "Sáng", title: "Đón bình minh ở Mũi Điện cực Đông", tip: "Cần tới trước 5h sáng, có một đoạn đi bộ lên ngọn hải đăng." },
+      { dayPart: "Chiều", title: "Gành Đá Đĩa & Bãi Xép", tip: "Nắng chói, nhất định mang ô/dù. Vé tham quan khá rẻ." },
+      { dayPart: "Tối", title: "Cá ngừ đại dương mù tạt", tip: "Món mắt cá ngừ tiềm thuốc bắc và sashimi cá ngừ là tinh hoa Phú Yên." }
     ]
   }
 ];

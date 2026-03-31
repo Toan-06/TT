@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WanderViệt — Quản Trị Hệ Thống</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700&family=Outfit:wght@500;600;700&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="admin.css" />
 </head>
+
 <body class="admin-body">
   <header class="site-header is-scrolled">
     <div class="container header-inner">
@@ -26,129 +30,160 @@
   </header>
 
   <main id="main" class="admin-main">
-    <div class="container">
-      <div class="admin-header">
-        <h1 class="hero-title" style="font-size:2rem;margin-bottom:0.5rem">🛡️ Bảng Điều Khiển</h1>
-        <p class="section-desc">Quản lý toàn bộ tài khoản người dùng và dữ liệu điểm du lịch.</p>
-      </div>
+    <div class="admin-layout">
+      <!-- Sidebar -->
+      <aside class="admin-sidebar" id="admin-sidebar">
+        <div class="admin-sidebar__header">
+          <h2 class="admin-sidebar__title">🛡️ Bảng Điều Khiển</h2>
+          <p class="admin-sidebar__desc">Quản lý hệ thống</p>
+        </div>
+        <nav class="auth-tabs sidebar-nav" role="tablist">
+          <button type="button" class="auth-tab is-active" data-admin-tab="users">👥 Người dùng</button>
+          <button type="button" class="auth-tab" data-admin-tab="places">📍 Điểm du lịch</button>
+          <button type="button" class="auth-tab" data-admin-tab="feedbacks">💬 Phản hồi</button>
+        </nav>
+      </aside>
 
-      <div id="admin-error" class="admin-error-box" hidden>
-        <strong>⛔ Truy cập bị từ chối.</strong> Bạn cần đăng nhập bằng tài khoản Admin để xem trang này.<br />
-        <a href="/index.html" style="color:inherit;text-decoration:underline">← Quay lại & đăng nhập</a>
-      </div>
-
-      <div id="admin-content" hidden>
-        <!-- Stats row -->
-        <div class="admin-stats" id="admin-stats">
-          <div class="stat-card"><div class="stat-val" id="stat-users">—</div><div class="stat-label">Người dùng</div></div>
-          <div class="stat-card"><div class="stat-val" id="stat-admin">—</div><div class="stat-label">Quản trị viên</div></div>
-          <div class="stat-card"><div class="stat-val" id="stat-places">—</div><div class="stat-label">Điểm du lịch</div></div>
-          <div class="stat-card"><div class="stat-val" id="stat-feedbacks">—</div><div class="stat-label">Phản hồi</div></div>
+      <!-- Main Content -->
+      <div class="admin-main-content">
+        <div id="admin-error" class="admin-error-box" hidden>
+          <strong>⛔ Truy cập bị từ chối.</strong> Bạn cần đăng nhập bằng tài khoản Admin để xem trang này.<br />
+          <a href="/index.html" style="color:inherit;text-decoration:underline">← Quay lại & đăng nhập</a>
         </div>
 
-        <!-- Tabs -->
-        <div class="admin-tabs-wrap">
-          <div class="auth-tabs" role="tablist">
-            <button type="button" class="auth-tab is-active" data-admin-tab="users">👥 Người dùng</button>
-            <button type="button" class="auth-tab" data-admin-tab="places">📍 Điểm du lịch</button>
-            <button type="button" class="auth-tab" data-admin-tab="feedbacks">💬 Phản hồi</button>
-          </div>
-        </div>
-
-        <!-- Users Panel -->
-        <section id="panel-users" class="admin-panel is-visible">
-          <div class="admin-panel-header">
-            <h2 class="section-title" style="font-size:1.4rem;margin:0">Danh sách Người dùng</h2>
-            <input type="text" id="user-search" class="admin-search-input" placeholder="🔍 Tìm theo email hoặc tên..." />
-          </div>
-          <div class="table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Avatar</th>
-                  <th>Tên / Email</th>
-                  <th>Điện thoại</th>
-                  <th>Admin</th>
-                  <th>Ngày tạo</th>
-                  <th>Hành động</th>
-                </tr>
-              </thead>
-              <tbody id="users-tbody"><tr><td colspan="6" style="text-align:center;padding:2rem">Đang tải...</td></tr></tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- Places Panel -->
-        <section id="panel-places" class="admin-panel" hidden>
-          <div class="admin-panel-header">
-            <h2 class="section-title" style="font-size:1.4rem;margin:0">Điểm Du Lịch</h2>
-            <div style="display:flex;gap:0.75rem;align-items:center">
-              <input type="text" id="place-search" class="admin-search-input" placeholder="🔍 Tìm điểm đến..." />
-              <button class="btn btn--primary btn--small" id="btn-add-place">+ Thêm mới</button>
+        <div id="admin-content" hidden>
+          <!-- Stats row -->
+          <div class="admin-stats" id="admin-stats">
+            <div class="stat-card">
+              <div class="stat-val" id="stat-users">—</div>
+              <div class="stat-label">Người dùng</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val" id="stat-admin">—</div>
+              <div class="stat-label">Quản trị viên</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val" id="stat-places">—</div>
+              <div class="stat-label">Điểm du lịch</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val" id="stat-feedbacks">—</div>
+              <div class="stat-label">Phản hồi</div>
             </div>
           </div>
-          <div class="table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Ảnh</th>
-                  <th>Tên điểm đến</th>
-                  <th>Vùng miền</th>
-                  <th>Ngân sách</th>
-                  <th>Tọa độ</th>
-                  <th>Hành động</th>
-                </tr>
-              </thead>
-              <tbody id="places-tbody"><tr><td colspan="6" style="text-align:center;padding:2rem">Đang tải...</td></tr></tbody>
-            </table>
-          </div>
-        </section>
 
-        <!-- Feedbacks Panel -->
-        <section id="panel-feedbacks" class="admin-panel" hidden>
-          <div class="admin-panel-header">
-            <h2 class="section-title" style="font-size:1.4rem;margin:0">Danh sách Phản hồi</h2>
-            <input type="text" id="feedback-search" class="admin-search-input" placeholder="🔍 Tìm theo nội dung, tên..." />
-          </div>
-          <div class="table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Thời gian</th>
-                  <th>Người gửi</th>
-                  <th>Email</th>
-                  <th style="width: 45%;">Nội dung</th>
-                  <th>Hành động</th>
-                </tr>
-              </thead>
-              <tbody id="feedbacks-tbody"><tr><td colspan="5" style="text-align:center;padding:2rem">Đang tải...</td></tr></tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-    </div>
+          <!-- Users Panel -->
+          <section id="panel-users" class="admin-panel is-visible">
+            <div class="admin-panel-header">
+              <h2 class="section-title" style="font-size:1.4rem;margin:0">Danh sách Người dùng</h2>
+              <input type="text" id="user-search" class="admin-search-input"
+                placeholder="🔍 Tìm theo email hoặc tên..." />
+            </div>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Avatar</th>
+                    <th>Tên / Email</th>
+                    <th>Điện thoại</th>
+                    <th>Admin</th>
+                    <th>Ngày tạo</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="users-tbody">
+                  <tr>
+                    <td colspan="6" style="text-align:center;padding:2rem">Đang tải...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Places Panel -->
+          <section id="panel-places" class="admin-panel" hidden>
+            <div class="admin-panel-header">
+              <h2 class="section-title" style="font-size:1.4rem;margin:0">Điểm Du Lịch</h2>
+              <div style="display:flex;gap:0.75rem;align-items:center">
+                <input type="text" id="place-search" class="admin-search-input" placeholder="🔍 Tìm điểm đến..." />
+                <button class="btn btn--primary btn--small" id="btn-add-place">+ Thêm mới</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Ảnh</th>
+                    <th>Tên điểm đến</th>
+                    <th>Vùng miền</th>
+                    <th>Ngân sách</th>
+                    <th>Tọa độ</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="places-tbody">
+                  <tr>
+                    <td colspan="6" style="text-align:center;padding:2rem">Đang tải...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Feedbacks Panel -->
+          <section id="panel-feedbacks" class="admin-panel" hidden>
+            <div class="admin-panel-header">
+              <h2 class="section-title" style="font-size:1.4rem;margin:0">Danh sách Phản hồi</h2>
+              <input type="text" id="feedback-search" class="admin-search-input"
+                placeholder="🔍 Tìm theo nội dung, tên..." />
+            </div>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Thời gian</th>
+                    <th>Người gửi</th>
+                    <th>Email</th>
+                    <th style="width: 45%;">Nội dung</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="feedbacks-tbody">
+                  <tr>
+                    <td colspan="5" style="text-align:center;padding:2rem">Đang tải...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div> <!-- End admin-content -->
+      </div> <!-- End admin-main-content -->
+    </div> <!-- End admin-layout -->
   </main>
 
-  <!-- Backdrop -->
+  <!-- Backdrop for Drawers -->
   <div class="modal-backdrop" id="admin-modal-backdrop" hidden></div>
 
-  <!-- User Edit Modal -->
-  <div class="modal" id="modal-user-form" hidden>
-    <div class="modal__inner">
-      <div class="modal__header">
-        <h2 class="modal__title" id="user-modal-title">Chỉnh sửa Người dùng</h2>
-        <button type="button" class="modal__close" data-close-modal aria-label="Đóng">×</button>
+  <!-- User Edit Drawer (Off-canvas) -->
+  <div class="slide-drawer" id="modal-user-form" hidden>
+    <div class="slide-drawer__inner">
+      <div class="slide-drawer__header">
+        <h2 class="slide-drawer__title" id="user-modal-title">Chỉnh sửa Người dùng</h2>
+        <button type="button" class="slide-drawer__close" data-close-modal aria-label="Đóng">×</button>
       </div>
-      <div class="modal__body">
+      <div class="slide-drawer__body">
         <form id="user-form">
           <input type="hidden" name="id" id="user-edit-id" />
           <div class="admin-form-grid">
             <label class="field"><span class="field-label">Họ tên</span><input type="text" name="name" /></label>
-            <label class="field"><span class="field-label">Tên hiển thị</span><input type="text" name="displayName" /></label>
+            <label class="field"><span class="field-label">Tên hiển thị</span><input type="text"
+                name="displayName" /></label>
             <label class="field"><span class="field-label">Email</span><input type="email" name="email" /></label>
             <label class="field"><span class="field-label">Số điện thoại</span><input type="tel" name="phone" /></label>
-            <label class="field field--full"><span class="field-label">Link Ảnh đại diện (URL)</span><input type="url" name="avatar" placeholder="https://..." /></label>
-            <label class="field field--full"><span class="field-label">Ghi chú</span><textarea name="notes" rows="2"></textarea></label>
+            <label class="field field--full"><span class="field-label">Link Ảnh đại diện (URL)</span><input type="url"
+                name="avatar" placeholder="https://..." /></label>
+            <label class="field field--full"><span class="field-label">Ghi chú</span><textarea name="notes"
+                rows="2"></textarea></label>
             <label class="field field--full" style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0">
               <input type="checkbox" name="isAdmin" id="chk-is-admin" style="width:20px;height:20px" />
               <span class="field-label" style="margin:0">Cấp quyền Admin</span>
@@ -156,7 +191,8 @@
           </div>
           <div style="display:flex;gap:0.75rem;margin-top:1rem">
             <button type="submit" class="btn btn--primary" style="flex:1">💾 Lưu thay đổi</button>
-            <button type="button" class="btn btn--ghost" id="btn-delete-user" style="color:#f87171;border-color:rgba(248,113,113,0.4)">🗑️ Xóa tài khoản</button>
+            <button type="button" class="btn btn--ghost" id="btn-delete-user"
+              style="color:#f87171;border-color:rgba(248,113,113,0.4)">🗑️ Xóa tài khoản</button>
           </div>
           <p id="user-form-status" style="margin-top:0.75rem;font-size:0.9rem;min-height:1.25rem"></p>
         </form>
@@ -164,20 +200,22 @@
     </div>
   </div>
 
-  <!-- Place Edit Modal -->
-  <div class="modal" id="modal-place-form" hidden>
-    <div class="modal__inner modal__inner--wide">
-      <div class="modal__header">
-        <h2 class="modal__title" id="place-modal-title">Thêm / Sửa Điểm Đến</h2>
-        <button type="button" class="modal__close" data-close-modal aria-label="Đóng">×</button>
+  <!-- Place Edit Drawer (Off-canvas) -->
+  <div class="slide-drawer" id="modal-place-form" hidden>
+    <div class="slide-drawer__inner slide-drawer__inner--wide">
+      <div class="slide-drawer__header">
+        <h2 class="slide-drawer__title" id="place-modal-title">Thêm / Sửa Điểm Đến</h2>
+        <button type="button" class="slide-drawer__close" data-close-modal aria-label="Đóng">×</button>
       </div>
-      <div class="modal__body">
+      <div class="slide-drawer__body">
         <form id="place-form">
           <input type="hidden" name="id" id="place-edit-id" />
           <div class="admin-form-grid">
-            <label class="field"><span class="field-label">Tên địa điểm (*)</span><input type="text" name="name" required /></label>
+            <label class="field"><span class="field-label">Tên địa điểm (*)</span><input type="text" name="name"
+                required /></label>
             <label class="field"><span class="field-label">Vùng miền</span><input type="text" name="region" /></label>
-            <label class="field field--full"><span class="field-label">Link Ảnh minh họa (URL)</span><input type="url" name="image" placeholder="https://images.unsplash.com/..." /></label>
+            <label class="field field--full"><span class="field-label">Link Ảnh minh họa (URL)</span><input type="url"
+                name="image" placeholder="https://images.unsplash.com/..." /></label>
             <label class="field"><span class="field-label">Ngân sách</span>
               <select name="budget">
                 <option value="1">1 - Tiết kiệm</option>
@@ -192,14 +230,22 @@
                 <option value="nhanh">Năng động</option>
               </select>
             </label>
-            <label class="field"><span class="field-label">Vĩ độ (lat)</span><input type="number" name="lat" step="any" placeholder="ví dụ: 10.2899" /></label>
-            <label class="field"><span class="field-label">Kinh độ (lng)</span><input type="number" name="lng" step="any" placeholder="ví dụ: 103.984" /></label>
-            <label class="field field--full"><span class="field-label">Tags (cách nhau bằng dấu phẩy)</span><input type="text" name="tags" placeholder="biển, ẩm thực, nghỉ dưỡng" /></label>
-            <label class="field field--full"><span class="field-label">Mô tả ngắn (meta)</span><input type="text" name="meta" /></label>
-            <label class="field field--full"><span class="field-label">Mô tả chi tiết</span><textarea name="text" rows="3"></textarea></label>
-            <label class="field"><span class="field-label">Nguồn tham khảo (Tên)</span><input type="text" name="sourceName" placeholder="Ví dụ: Wikipedia, Cổng DL..." /></label>
-            <label class="field"><span class="field-label">Link nguồn (URL)</span><input type="url" name="sourceUrl" placeholder="https://..." /></label>
-            <label class="field field--full"><span class="field-label">Mẹo di chuyển</span><input type="text" name="transportTips" /></label>
+            <label class="field"><span class="field-label">Vĩ độ (lat)</span><input type="number" name="lat" step="any"
+                placeholder="ví dụ: 10.2899" /></label>
+            <label class="field"><span class="field-label">Kinh độ (lng)</span><input type="number" name="lng"
+                step="any" placeholder="ví dụ: 103.984" /></label>
+            <label class="field field--full"><span class="field-label">Tags (cách nhau bằng dấu phẩy)</span><input
+                type="text" name="tags" placeholder="biển, ẩm thực, nghỉ dưỡng" /></label>
+            <label class="field field--full"><span class="field-label">Mô tả ngắn (meta)</span><input type="text"
+                name="meta" /></label>
+            <label class="field field--full"><span class="field-label">Mô tả chi tiết</span><textarea name="text"
+                rows="3"></textarea></label>
+            <label class="field"><span class="field-label">Nguồn tham khảo (Tên)</span><input type="text"
+                name="sourceName" placeholder="Ví dụ: Wikipedia, Cổng DL..." /></label>
+            <label class="field"><span class="field-label">Link nguồn (URL)</span><input type="url" name="sourceUrl"
+                placeholder="https://..." /></label>
+            <label class="field field--full"><span class="field-label">Mẹo di chuyển</span><input type="text"
+                name="transportTips" /></label>
             <label class="field field--full" style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0">
               <input type="checkbox" name="top" id="chk-top" style="width:20px;height:20px" />
               <span class="field-label" style="margin:0">Đánh dấu là điểm "Top"</span>
@@ -207,7 +253,8 @@
           </div>
           <div style="display:flex;gap:0.75rem;margin-top:1rem">
             <button type="submit" class="btn btn--primary" style="flex:1">💾 Lưu Thông Tin</button>
-            <button type="button" class="btn btn--ghost" id="btn-delete-place" hidden style="color:#f87171;border-color:rgba(248,113,113,0.4)">🗑️ Xóa điểm đến</button>
+            <button type="button" class="btn btn--ghost" id="btn-delete-place" hidden
+              style="color:#f87171;border-color:rgba(248,113,113,0.4)">🗑️ Xóa điểm đến</button>
           </div>
           <p id="place-form-status" style="margin-top:0.75rem;font-size:0.9rem;min-height:1.25rem"></p>
         </form>
@@ -218,4 +265,5 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="admin.js"></script>
 </body>
+
 </html>

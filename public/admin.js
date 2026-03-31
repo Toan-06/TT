@@ -161,6 +161,10 @@
 
     document.getElementById('admin-modal-backdrop').hidden = false;
     userModal.hidden = false;
+    // Tiny delay to allow display:flex to apply before animation starts
+    requestAnimationFrame(() => {
+      userModal.classList.add('is-open');
+    });
   }
 
   userForm.addEventListener('submit', async (e) => {
@@ -319,6 +323,9 @@
 
     document.getElementById('admin-modal-backdrop').hidden = false;
     placeModal.hidden = false;
+    requestAnimationFrame(() => {
+      placeModal.classList.add('is-open');
+    });
   }
 
   placeForm.addEventListener('submit', async (e) => {
@@ -389,9 +396,15 @@
 
   // --- Utils ---
   function closeAllModals() {
-    userModal.hidden = true;
-    placeModal.hidden = true;
+    if (userModal) userModal.classList.remove('is-open');
+    if (placeModal) placeModal.classList.remove('is-open');
     document.getElementById('admin-modal-backdrop').hidden = true;
+
+    // wait for transition to finish
+    setTimeout(() => {
+      if (!userModal.classList.contains('is-open')) userModal.hidden = true;
+      if (!placeModal.classList.contains('is-open')) placeModal.hidden = true;
+    }, 300);
   }
 
   document.querySelectorAll('[data-close-modal]').forEach(btn => {
