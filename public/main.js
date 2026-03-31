@@ -529,7 +529,7 @@
           fetch('/api/auth/profile', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
-            body: JSON.stringify({ displayName: newProf.displayName, notes: newProf.notes, phone: newProf.phone })
+            body: JSON.stringify({ displayName: newProf.displayName, notes: newProf.notes, phone: newProf.phone, avatar: newProf.avatar })
           }).catch(function() {});
         }
 
@@ -552,6 +552,47 @@
         // Không chọn file mới → giữ avatar hiện tại
         finishSave(undefined);
       }
+    });
+  }
+
+  var passwordForm = document.querySelector("[data-password-form]");
+  if (passwordForm) {
+    passwordForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var fd = new FormData(passwordForm);
+      var oldPass = fd.get("oldPassword");
+      var newPass = fd.get("newPassword");
+      var statusEl = passwordForm.querySelector("[data-password-status]");
+      
+      var token = localStorage.getItem("wander_token");
+      if (!token) {
+        statusEl.textContent = "Vui lòng đăng nhập.";
+        return;
+      }
+      
+      statusEl.textContent = "Đang cập nhật...";
+      statusEl.style.color = "var(--text-muted)";
+      
+      try {
+        var res = await fetch('/api/auth/password', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+          body: JSON.stringify({ oldPassword: oldPass, newPassword: newPass })
+        });
+        var json = await res.json();
+        if (json.success) {
+          statusEl.textContent = "✔ Đổi mật khẩu thành công!";
+          statusEl.style.color = "#4ade80"; // green-400
+          passwordForm.reset();
+        } else {
+          statusEl.textContent = "✖ " + (json.message || "Lỗi cập nhật mật khẩu");
+          statusEl.style.color = "#f87171"; // red-400
+        }
+      } catch(err) {
+        statusEl.textContent = "✖ Lỗi kết nối đến máy chủ";
+        statusEl.style.color = "#f87171";
+      }
+      setTimeout(function() { if(statusEl) statusEl.textContent = ""; }, 4000);
     });
   }
 

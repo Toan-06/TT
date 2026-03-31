@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('./models/User');
 
-const email = process.argv[2] || 'admin@wanderviet.com'; // Tài khoản admin
+const email = process.argv[2] || 'admin@wanderviet.com'; // Tài khoản admin 
 const password = process.argv[3] || 'admin123';          // Mật khẩu admin
 const name = process.argv[4] || 'Quản Trị Viên';
 

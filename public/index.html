@@ -433,6 +433,16 @@
           <button type="submit" class="btn btn--primary btn--block">Lưu hồ sơ</button>
           <p data-profile-status role="status"></p>
         </form>
+
+        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid rgba(148,163,184,0.2);" />
+        
+        <h3 style="margin-bottom: 1rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;"><span aria-hidden="true">🔒</span> Đổi mật khẩu</h3>
+        <form data-password-form>
+          <label class="field"><span class="field-label">Mật khẩu cũ</span><input type="password" name="oldPassword" required autocomplete="current-password" /></label>
+          <label class="field"><span class="field-label">Mật khẩu mới (ít nhất 6 ký tự)</span><input type="password" name="newPassword" required minlength="6" autocomplete="new-password" /></label>
+          <button type="submit" class="btn btn--primary btn--small">Cập nhật mật khẩu</button>
+          <p data-password-status role="status" style="margin-top: 0.5rem; font-size: 0.9rem;"></p>
+        </form>
       </div>
     </div>
   </div>
