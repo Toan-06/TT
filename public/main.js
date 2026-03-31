@@ -1,7 +1,27 @@
 (function () {
   "use strict";
 
-  var PLACES = Array.isArray(window.WANDER_PLACES) ? window.WANDER_PLACES : [];
+  // PLACES sẽ được nạp từ API MongoDB, fallback về dữ liệu tĩnh nếu API lỗi
+  var PLACES = [];
+
+  async function loadPlacesFromAPI() {
+    try {
+      var res = await fetch('/api/places');
+      var json = await res.json();
+      if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        PLACES = json.data;
+        return true;
+      }
+    } catch (e) {
+      console.warn('Không thể tải từ API, dùng dữ liệu tĩnh:', e);
+    }
+    // Fallback: dùng dữ liệu tĩnh từ places-data.js
+    if (Array.isArray(window.WANDER_PLACES) && window.WANDER_PLACES.length > 0) {
+      PLACES = window.WANDER_PLACES;
+    }
+    return false;
+  }
+
   var STORAGE = {
     users: "wander_users",
     session: "wander_session",
@@ -584,7 +604,8 @@
         '" data-wish="' +
         escapeAttr(p.id) +
         '">' +
-        (wishIsOn(p.id) ? "♥ Đã lưu" : "♡ Yêu thích") +
+        (wishIsOn(p.id) ? '♥ Đã lưu' : '♡ Yêu thích') +
+        (p.favoritesCount ? ' <span class="wish-count">' + p.favoritesCount + '</span>' : '') +
         '</button><button type="button" class="btn btn--primary btn--small" data-detail="' +
         escapeAttr(p.id) +
         '">Chi tiết</button>' +
@@ -635,7 +656,32 @@
         var id = w.getAttribute("data-wish");
         var on = toggleWish(id);
         w.classList.toggle("is-on", on);
-        w.textContent = on ? "♥ Đã lưu" : "♡ Yêu thích";
+        // Gọi API MongoDB để cập nhật lượt yêu thích
+        fetch('/api/places/' + id + '/favorite', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: on ? 'add' : 'remove' })
+        }).then(function(res) { return res.json(); }).then(function(json) {
+          if (json.success) {
+            // Cập nhật count trong mảng PLACES
+            var place = PLACES.find(function(p) { return p.id === id; });
+            if (place) place.favoritesCount = json.favoritesCount;
+            // Cập nhật hiển thị chỉ số lượt thích trên nút
+            var countEl = w.querySelector('.wish-count');
+            if (json.favoritesCount > 0) {
+              if (!countEl) {
+                countEl = document.createElement('span');
+                countEl.className = 'wish-count';
+                w.appendChild(countEl);
+              }
+              countEl.textContent = json.favoritesCount;
+            } else if (countEl) {
+              countEl.remove();
+            }
+          }
+        }).catch(function() {});
+        w.innerHTML = (on ? '♥ Đã lưu' : '♡ Yêu thích') +
+          (w.querySelector('.wish-count') ? ' <span class="wish-count">' + (w.querySelector('.wish-count').textContent || '') + '</span>' : '');
       }
       var a = t.closest("[data-add-stop-id]");
       if (a) {
@@ -740,7 +786,23 @@
     wrap.querySelector("[data-modal-wish]").addEventListener("click", function () {
       var on = toggleWish(p.id);
       var wb = wrap.querySelector("[data-modal-wish]");
-      if (wb) wb.textContent = on ? "♥ Đã lưu" : "Yêu thích";
+      // Gọi API MongoDB để cập nhật lượt yêu thích
+      fetch('/api/places/' + p.id + '/favorite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: on ? 'add' : 'remove' })
+      }).then(function(res) { return res.json(); }).then(function(json) {
+        if (json.success) {
+          var place = PLACES.find(function(x) { return x.id === p.id; });
+          if (place) place.favoritesCount = json.favoritesCount;
+          if (wb) {
+            wb.textContent = on
+              ? '♥ Đã lưu (' + json.favoritesCount + ')'
+              : '♡ Yêu thích (' + json.favoritesCount + ')';
+          }
+        }
+      }).catch(function() {});
+      if (wb) wb.textContent = on ? "♥ Đã lưu" : "♡ Yêu thích";
       renderDestCards();
       applyDestFilters();
       renderPersonalSection();
@@ -1194,24 +1256,31 @@
   }
 
   /* ——— Boot ——— */
-  renderDestCards();
-  bindDestInteractions();
-  applyDestFilters();
-  stopList = loadDraftStops();
-  var draft = loadJSON(STORAGE.tripDraft, null);
-  if (tripNameInput && draft && draft.name) tripNameInput.value = draft.name;
-  renderStopListUI();
-  window.requestAnimationFrame(function () {
-    redrawMap();
-  });
+  async function init() {
+    // Tải dữ liệu từ MongoDB trước khi render
+    await loadPlacesFromAPI();
 
-  var rankedInit = sortByScore(getPrefs());
-  renderSmartResults(rankedInit);
-  refreshAuthUI();
+    renderDestCards();
+    bindDestInteractions();
+    applyDestFilters();
+    stopList = loadDraftStops();
+    var draft = loadJSON(STORAGE.tripDraft, null);
+    if (tripNameInput && draft && draft.name) tripNameInput.value = draft.name;
+    renderStopListUI();
+    window.requestAnimationFrame(function () {
+      redrawMap();
+    });
 
-  if (profileForm && getSession()) {
-    var p = getProfile();
-    if (profileForm.elements.displayName) profileForm.elements.displayName.value = p.displayName || "";
-    if (profileForm.elements.notes) profileForm.elements.notes.value = p.notes || "";
+    var rankedInit = sortByScore(getPrefs());
+    renderSmartResults(rankedInit);
+    refreshAuthUI();
+
+    if (profileForm && getSession()) {
+      var p = getProfile();
+      if (profileForm.elements.displayName) profileForm.elements.displayName.value = p.displayName || "";
+      if (profileForm.elements.notes) profileForm.elements.notes.value = p.notes || "";
+    }
   }
+
+  init();
 })();
