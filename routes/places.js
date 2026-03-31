@@ -23,8 +23,51 @@ router.get('/', async (req, res) => {
     if (places && places.length > 0) {
       return res.json({ success: true, data: places });
     }
-    // Nếu db trống, trả về mảng lưu memory demo
-    return res.json({ success: true, data: placesData, source: 'memory' });
+    
+    // Nếu db trống, tự động chèn dữ liệu mẫu vào MongoDB (Seeding)
+    if (placesData && placesData.length > 0) {
+      console.log('Database trống. Đang tự động nạp dữ liệu mẫu vào MongoDB...');
+      await Place.insertMany(placesData);
+      console.log('Nạp dữ liệu mẫu thành công!');
+      const newPlaces = await Place.find({});
+      return res.json({ success: true, data: newPlaces });
+    }
+
+    return res.json({ success: true, data: [], source: 'memory' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// API để reset/nạp lại dữ liệu (có thể dùng test trên Postman/Insomnia)
+router.post('/seed', async (req, res) => {
+  try {
+    await Place.deleteMany({}); // Xóa dữ liệu cũ
+    const inserted = await Place.insertMany(placesData);
+    res.json({ success: true, message: `Đã tự động tạo database và chèn ${inserted.length} bản ghi!` });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// API để cập nhật lượt yêu thích (Thả tim)
+router.post('/:id/favorite', async (req, res) => {
+  try {
+    const { action } = req.body; // 'add' hoặc 'remove'
+    const place = await Place.findOne({ id: req.params.id });
+    
+    if (!place) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy địa điểm' });
+    }
+
+    if (action === 'add') {
+      place.favoritesCount = (place.favoritesCount || 0) + 1;
+    } else if (action === 'remove' && place.favoritesCount > 0) {
+      place.favoritesCount -= 1;
+    }
+
+    await place.save();
+    res.json({ success: true, favoritesCount: place.favoritesCount });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

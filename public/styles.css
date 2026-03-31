@@ -1681,3 +1681,32 @@ section[id] {
   color: var(--text);
   font-family: inherit;
 }
+
+/* Wish / Favorites badge */
+.dest-wish {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.dest-wish.is-on {
+  color: var(--accent-warm);
+  border-color: rgba(255, 0, 85, 0.4);
+  background: rgba(255, 0, 85, 0.1);
+}
+
+.wish-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(255, 0, 85, 0.25);
+  color: var(--accent-warm);
+  border-radius: 999px;
+  line-height: 1;
+}
