@@ -43,11 +43,14 @@
           <button type="button" class="btn btn--small btn--ghost" data-auth-open>Đăng nhập</button>
           <div class="user-bubble" data-user-bubble hidden>
             <button type="button" class="user-bubble__btn" data-user-toggle aria-expanded="false" aria-haspopup="true">
+              <img src="" alt="Avatar" class="user-avatar-img" data-user-avatar hidden />
               <span data-user-initial>?</span>
             </button>
             <div class="user-dropdown" data-user-dropdown hidden>
               <p class="user-dropdown__name" data-user-name></p>
               <button type="button" class="user-dropdown__item" data-open-profile>Hồ sơ &amp; sở thích</button>
+              <a href="/admin.html" class="user-dropdown__item" data-admin-link hidden
+                style="text-decoration:none; color:inherit; display:block">Quản trị Admin</a>
               <button type="button" class="user-dropdown__item" data-logout>Đăng xuất</button>
             </div>
           </div>
@@ -403,8 +406,26 @@
       </div>
       <div class="modal__body">
         <form data-profile-form>
+          <!-- Avatar upload -->
+          <div class="avatar-upload-wrap">
+            <div class="avatar-upload-preview" data-avatar-preview>
+              <img src="" alt="Ảnh đại diện" data-avatar-preview-img hidden />
+              <span data-avatar-preview-initial>?</span>
+            </div>
+            <div class="avatar-upload-actions">
+              <label class="avatar-file-label" for="avatar-file-input">
+                <span class="avatar-file-icon">📁</span>
+                <span>Chọn ảnh từ thiết bị</span>
+                <input id="avatar-file-input" type="file" name="avatarFile" accept="image/*"
+                  data-avatar-file-input class="visually-hidden" />
+              </label>
+              <p class="avatar-upload-hint">JPEG, PNG, WebP — tối đa 2 MB</p>
+              <button type="button" class="btn btn--ghost btn--small" data-avatar-remove>Xóa ảnh</button>
+            </div>
+          </div>
           <label class="field"><span class="field-label">Họ tên hiển thị</span><input type="text"
               name="displayName" /></label>
+          <label class="field"><span class="field-label">Số điện thoại</span><input type="tel" name="phone" /></label>
           <label class="field"><span class="field-label">Ghi chú (ví dụ dị ứng, giới hạn đi bộ)</span><textarea
               name="notes" rows="3"></textarea></label>
           <p class="field-label">Đồng bộ nhanh với bộ lọc «Tìm theo bạn»</p>
