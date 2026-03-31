@@ -1,4 +1,4 @@
-(function() {
+(function () {
   "use strict";
 
   const token = localStorage.getItem('wander_token');
@@ -9,6 +9,7 @@
 
   let usersData = [];
   let placesData = [];
+  let feedbacksData = [];
 
   // --- Auth Check ---
   if (!token) {
@@ -49,9 +50,10 @@
 
       await loadUsers();
       await loadPlaces();
+      await loadFeedbacks();
       contentBox.hidden = false;
       updateStats();
-    } catch(e) {
+    } catch (e) {
       console.error(e);
       // Nếu có lỗi fetch (kể cả data UI), vẫn ráng hiện UI chính
       contentBox.hidden = false;
@@ -62,6 +64,9 @@
     document.getElementById('stat-users').textContent = usersData.length;
     document.getElementById('stat-admin').textContent = usersData.filter(u => u.isAdmin).length;
     document.getElementById('stat-places').textContent = placesData.length;
+    
+    const feedStat = document.getElementById('stat-feedbacks');
+    if (feedStat) feedStat.textContent = feedbacksData.length;
   }
 
   // --- Tabs ---
@@ -69,7 +74,7 @@
     btn.addEventListener('click', () => {
       document.querySelectorAll('[data-admin-tab]').forEach(b => b.classList.remove('is-active'));
       document.querySelectorAll('.admin-panel').forEach(p => p.hidden = true);
-      
+
       btn.classList.add('is-active');
       const target = btn.getAttribute('data-admin-tab');
       document.getElementById('panel-' + target).hidden = false;
@@ -123,8 +128,8 @@
 
   document.getElementById('user-search').addEventListener('input', (e) => {
     const q = e.target.value.toLowerCase();
-    const filtered = usersData.filter(u => 
-      (u.name && u.name.toLowerCase().includes(q)) || 
+    const filtered = usersData.filter(u =>
+      (u.name && u.name.toLowerCase().includes(q)) ||
       (u.email && u.email.toLowerCase().includes(q)) ||
       (u.displayName && u.displayName.toLowerCase().includes(q))
     );
@@ -137,11 +142,13 @@
   const btnDeleteUser = document.getElementById('btn-delete-user');
   const userFormStatus = document.getElementById('user-form-status');
 
+  let _originalIsAdmin = false; // lưu trạng thái isAdmin ban đầu
+
   function openUserModal(user) {
     userForm.reset();
     userFormStatus.textContent = '';
     userFormStatus.className = '';
-    
+
     userForm.elements['id'].value = user._id;
     userForm.elements['name'].value = user.name || '';
     userForm.elements['displayName'].value = user.displayName || '';
@@ -150,7 +157,8 @@
     userForm.elements['avatar'].value = user.avatar || '';
     userForm.elements['notes'].value = user.notes || '';
     document.getElementById('chk-is-admin').checked = !!user.isAdmin;
-    
+    _originalIsAdmin = !!user.isAdmin; // ghi nhớ trạng thái gốc
+
     document.getElementById('admin-modal-backdrop').hidden = false;
     userModal.hidden = false;
   }
@@ -158,6 +166,17 @@
   userForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const id = userForm.elements['id'].value;
+    const newIsAdmin = document.getElementById('chk-is-admin').checked;
+    const userName = userForm.elements['displayName'].value || userForm.elements['name'].value || 'người dùng này';
+
+    // Xác nhận nếu quyền Admin thay đổi
+    if (newIsAdmin !== _originalIsAdmin) {
+      const action = newIsAdmin
+        ? `Bạn có chắc muốn cấp quyền Admin cho "${userName}" không?`
+        : `Bạn có chắc muốn thu hồi quyền Admin của "${userName}" không?`;
+      if (!confirm(action)) return;
+    }
+
     const body = {
       name: userForm.elements['name'].value,
       displayName: userForm.elements['displayName'].value,
@@ -165,7 +184,7 @@
       phone: userForm.elements['phone'].value,
       avatar: userForm.elements['avatar'].value,
       notes: userForm.elements['notes'].value,
-      isAdmin: document.getElementById('chk-is-admin').checked
+      isAdmin: newIsAdmin
     };
 
     userFormStatus.textContent = 'Đang lưu...';
@@ -183,7 +202,7 @@
         userFormStatus.textContent = res.message || 'Lỗi lưu thông tin';
         userFormStatus.style.color = '#f87171';
       }
-    } catch(err) {
+    } catch (err) {
       userFormStatus.textContent = 'Lỗi kết nối máy chủ';
       userFormStatus.style.color = '#f87171';
     }
@@ -191,8 +210,9 @@
 
   btnDeleteUser.addEventListener('click', async () => {
     const id = userForm.elements['id'].value;
-    if (!confirm('Hành động này không thể hoàn tác. Bạn có chắc muốn xóa tài khoản này?')) return;
-    
+    const userName = userForm.elements['displayName'].value || userForm.elements['name'].value || 'tài khoản này';
+    if (!confirm(`Bạn có chắc muốn XÓA tài khoản "${userName}" không?\nHành động này không thể hoàn tác!`)) return;
+
     try {
       const res = await apiFetch(`/api/admin/users/${id}`, { method: 'DELETE' });
       if (res.success) {
@@ -203,7 +223,7 @@
       } else {
         alert(res.message || 'Không thể xóa tài khoản');
       }
-    } catch(err) {
+    } catch (err) {
       alert('Lỗi kết nối máy chủ');
     }
   });
@@ -251,8 +271,8 @@
 
   document.getElementById('place-search').addEventListener('input', (e) => {
     const q = e.target.value.toLowerCase();
-    const filtered = placesData.filter(p => 
-      (p.name && p.name.toLowerCase().includes(q)) || 
+    const filtered = placesData.filter(p =>
+      (p.name && p.name.toLowerCase().includes(q)) ||
       (p.region && p.region.toLowerCase().includes(q)) ||
       (p.tags && p.tags.join(' ').toLowerCase().includes(q))
     );
@@ -265,7 +285,7 @@
   const btnAddPlace = document.getElementById('btn-add-place');
   const btnDeletePlace = document.getElementById('btn-delete-place');
   const placeFormStatus = document.getElementById('place-form-status');
-  
+
   btnAddPlace.addEventListener('click', () => {
     openPlaceModal();
   });
@@ -289,6 +309,8 @@
       placeForm.elements['tags'].value = (place.tags || []).join(', ');
       placeForm.elements['meta'].value = place.meta || '';
       placeForm.elements['text'].value = place.text || '';
+      placeForm.elements['sourceName'].value = place.sourceName || '';
+      placeForm.elements['sourceUrl'].value = place.sourceUrl || '';
       placeForm.elements['transportTips'].value = place.transportTips || '';
       document.getElementById('chk-top').checked = !!place.top;
     } else {
@@ -313,6 +335,8 @@
       tags: placeForm.elements['tags'].value.split(',').map(tag => tag.trim()).filter(tag => tag),
       meta: placeForm.elements['meta'].value,
       text: placeForm.elements['text'].value,
+      sourceName: placeForm.elements['sourceName'].value,
+      sourceUrl: placeForm.elements['sourceUrl'].value,
       transportTips: placeForm.elements['transportTips'].value,
       top: document.getElementById('chk-top').checked
     };
@@ -338,7 +362,7 @@
         placeFormStatus.textContent = res.message || 'Lỗi lưu thông tin';
         placeFormStatus.style.color = '#f87171';
       }
-    } catch(err) {
+    } catch (err) {
       placeFormStatus.textContent = 'Lỗi kết nối máy chủ';
       placeFormStatus.style.color = '#f87171';
     }
@@ -347,7 +371,7 @@
   btnDeletePlace.addEventListener('click', async () => {
     const id = placeForm.elements['id'].value;
     if (!id || !confirm('Hành động này không thể hoàn tác. Bạn có chắc muốn xóa điểm này?')) return;
-    
+
     try {
       const res = await apiFetch(`/api/admin/places/${id}`, { method: 'DELETE' });
       if (res.success) {
@@ -358,7 +382,7 @@
       } else {
         alert(res.message || 'Không thể xóa');
       }
-    } catch(err) {
+    } catch (err) {
       alert('Lỗi kết nối máy chủ');
     }
   });
@@ -374,5 +398,81 @@
     btn.addEventListener('click', closeAllModals);
   });
   document.getElementById('admin-modal-backdrop').addEventListener('click', closeAllModals);
+
+  // --- Feedbacks ---
+  async function loadFeedbacks() {
+    const fnTable = document.getElementById('feedbacks-tbody');
+    if (!fnTable) return;
+    
+    fnTable.innerHTML = '<tr><td colspan="5" style="text-align:center">Đang tải...</td></tr>';
+    try {
+      const json = await apiFetch('/api/admin/feedbacks');
+      if (json.success) {
+        feedbacksData = json.data;
+        renderFeedbacks(feedbacksData);
+      }
+    } catch (err) {
+      fnTable.innerHTML = '<tr><td colspan="5" style="text-align:center;color:red">Lỗi tải dữ liệu</td></tr>';
+    }
+  }
+
+  function renderFeedbacks(feedbacks) {
+    const fnTable = document.getElementById('feedbacks-tbody');
+    if (!fnTable) return;
+
+    fnTable.innerHTML = '';
+    if (feedbacks.length === 0) {
+      fnTable.innerHTML = '<tr><td colspan="5" style="text-align:center">Chưa có phản hồi nào</td></tr>';
+      return;
+    }
+
+    feedbacks.forEach(fb => {
+      const tr = document.createElement('tr');
+      const date = new Date(fb.createdAt);
+      const timeStr = `${date.toLocaleDateString('vi-VN')} ${date.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'})}`;
+      
+      tr.innerHTML = `
+        <td><small style="color:var(--text-muted)">${timeStr}</small></td>
+        <td><strong>${fb.name}</strong></td>
+        <td><a href="mailto:${fb.email}" style="color:var(--text-muted); text-decoration:underline;">${fb.email}</a></td>
+        <td style="white-space:normal; line-height:1.4">${(fb.message || '').replace(/\n/g, '<br>')}</td>
+        <td>
+          <button class="btn btn--ghost btn--small delete-fb-btn" data-id="${fb._id}" style="color:#f87171;border-color:rgba(248,113,113,0.4)">Xóa</button>
+        </td>
+      `;
+      fnTable.appendChild(tr);
+    });
+
+    document.querySelectorAll('.delete-fb-btn').forEach(btn => {
+      btn.addEventListener('click', async function() {
+        const id = this.getAttribute('data-id');
+        if (confirm('Bạn có chắc chắn muốn xóa phản hồi này vĩnh viễn không?')) {
+          try {
+            const res = await apiFetch('/api/admin/feedbacks/' + id, { method: 'DELETE' });
+            if (res.success) {
+              await loadFeedbacks();
+              updateStats();
+            } else {
+              alert('Lỗi: ' + res.message);
+            }
+          } catch (e) {
+            alert('Lỗi kết nối máy chủ');
+          }
+        }
+      });
+    });
+  }
+
+  const fbSearchInput = document.getElementById('feedback-search');
+  if (fbSearchInput) {
+    fbSearchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const filtered = feedbacksData.filter(fb => {
+        const text = ((fb.name || '') + ' ' + (fb.email || '') + ' ' + (fb.message || '')).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return text.includes(q);
+      });
+      renderFeedbacks(filtered);
+    });
+  }
 
 })();

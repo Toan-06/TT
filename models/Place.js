@@ -17,6 +17,8 @@ const placeSchema = new mongoose.Schema({
   top: Boolean,
   favoritesCount: { type: Number, default: 0 },
   transportTips: String,
+  sourceName: String,
+  sourceUrl: String,
   activities: [{
     dayPart: String,
     title: String,

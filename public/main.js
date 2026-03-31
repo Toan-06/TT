@@ -937,7 +937,9 @@
       escapeHtml(p.text) +
       '</p><p style="margin-top:1rem"><strong>Di chuyển:</strong> ' +
       escapeHtml(p.transportTips || "") +
-      '</p><div class="place-detail__activities">' +
+      '</p>' +
+      (p.sourceUrl ? '<p style="margin-top:0.5rem;font-size:0.9rem;"><strong>Nguồn tham khảo:</strong> <a href="' + escapeAttr(p.sourceUrl) + '" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:underline;">' + escapeHtml(p.sourceName || "Website chính thức") + '</a></p>' : "") +
+      '<div class="place-detail__activities">' +
       acts +
       '</div><div id="place-map" style="height:250px; border-radius:12px; margin-top:1rem; border:1px solid rgba(148,163,184,0.2); display:none;"></div>' +
       '<div class="dest-card-actions" style="margin-top:1rem">' +
@@ -946,7 +948,10 @@
       '">Thêm vào lịch</button>' +
       '<button type="button" class="btn btn--ghost btn--small" data-modal-wish="' +
       escapeAttr(p.id) +
-      '">Yêu thích</button></div>';
+      '">' +
+      (wishIsOn(p.id) ? '♥ Đã lưu' : '♡ Yêu thích') +
+      (p.favoritesCount ? ' <span class="wish-count">' + p.favoritesCount + '</span>' : '') +
+      '</button></div>';
 
     wrap.querySelector("[data-modal-add]").addEventListener("click", function () {
       addStopById(p.id);
@@ -955,28 +960,25 @@
       if (pl) pl.scrollIntoView({ behavior: "smooth" });
     });
     wrap.querySelector("[data-modal-wish]").addEventListener("click", function () {
-      var on = toggleWish(p.id);
+      var id = p.id;
+      var on = toggleWish(id);
       var wb = wrap.querySelector("[data-modal-wish]");
-      // Gọi API MongoDB để cập nhật lượt yêu thích
-      fetch('/api/places/' + p.id + '/favorite', {
+      
+      wb.innerHTML = (on ? '♥ Đã lưu' : '♡ Yêu thích') + (p.favoritesCount ? ' <span class="wish-count">' + p.favoritesCount + '</span>' : '');
+
+      fetch('/api/places/' + id + '/favorite', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: on ? 'add' : 'remove' })
       }).then(function(res) { return res.json(); }).then(function(json) {
         if (json.success) {
-          var place = PLACES.find(function(x) { return x.id === p.id; });
-          if (place) place.favoritesCount = json.favoritesCount;
-          if (wb) {
-            wb.textContent = on
-              ? '♥ Đã lưu (' + json.favoritesCount + ')'
-              : '♡ Yêu thích (' + json.favoritesCount + ')';
-          }
+          p.favoritesCount = json.favoritesCount;
+          if (wb) wb.innerHTML = (on ? '♥ Đã lưu' : '♡ Yêu thích') + (p.favoritesCount ? ' <span class="wish-count">' + p.favoritesCount + '</span>' : '');
+          renderDestCards();
+          applyDestFilters();
+          renderPersonalSection();
         }
       }).catch(function() {});
-      if (wb) wb.textContent = on ? "♥ Đã lưu" : "♡ Yêu thích";
-      renderDestCards();
-      applyDestFilters();
-      renderPersonalSection();
     });
     openModal("place");
     
@@ -1367,19 +1369,70 @@
 
   var form = document.querySelector("[data-contact-form]");
   var statusEl = document.querySelector("[data-form-status]");
+  
+  var chkAnon = document.getElementById("chk-anonymous");
+  var nameWrap = document.getElementById("field-name-wrap");
+  var emailWrap = document.getElementById("field-email-wrap");
+  var nameInput = document.getElementById("contact-name");
+  var emailInput = document.getElementById("contact-email");
+
+  if (chkAnon) {
+    chkAnon.addEventListener("change", function () {
+      if (this.checked) {
+        if (nameWrap) nameWrap.style.display = "none";
+        if (emailWrap) emailWrap.style.display = "none";
+        if (nameInput) { nameInput.required = false; nameInput.value = ""; }
+        if (emailInput) { emailInput.required = false; emailInput.value = ""; }
+      } else {
+        if (nameWrap) nameWrap.style.display = "block";
+        if (emailWrap) emailWrap.style.display = "block";
+        if (nameInput) nameInput.required = true;
+        if (emailInput) emailInput.required = true;
+        updateContactPrefill(); // Load lại thông tin user nếu có
+      }
+    });
+  }
 
   if (form && statusEl) {
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
       statusEl.textContent = "Đang gửi…";
       statusEl.classList.remove("is-success", "is-error");
+
+      var fd = new FormData(form);
+      var payload = {
+        name: fd.get("name") || "",
+        email: fd.get("email") || "",
+        message: fd.get("message") || "" // changed from "note"
+      };
+
+      try {
+        var res = await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        var json = await res.json();
+        
+        if (json.success) {
+          statusEl.textContent = "✔ Đã bắt được yêu cầu! Cảm ơn bạn.";
+          statusEl.classList.add("is-success");
+          form.reset();
+          updateContactPrefill();
+        } else {
+          statusEl.textContent = "✖ Lỗi: " + (json.message || "Không thể gửi phản hồi.");
+          statusEl.classList.add("is-error");
+        }
+      } catch (err) {
+        statusEl.textContent = "✖ Lỗi kết nối máy chủ. Vui lòng thử lại sau.";
+        statusEl.classList.add("is-error");
+      }
+      
       window.setTimeout(function () {
-        statusEl.textContent =
-          "Đã ghi nhận (demo). Trên bản thật cần kết nối backend / email.";
-        statusEl.classList.add("is-success");
-        form.reset();
-        updateContactPrefill();
-      }, 800);
+        if(statusEl.classList.contains("is-success")) {
+           statusEl.textContent = "";
+        }
+      }, 3500);
     });
   }
 
@@ -1500,6 +1553,19 @@
         behavior: 'smooth'
       });
     }, 4500);
+  }
+
+  /* ——— Newsletter form ——— */
+  var newsletterForm = document.querySelector(".newsletter-form");
+  if (newsletterForm) {
+    newsletterForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = newsletterForm.querySelector('input[type="email"]').value;
+      if (email) {
+        alert("Cảm ơn bạn! Chúng tôi sẽ gửi những ưu đãi mới nhất đến " + email);
+        newsletterForm.reset();
+      }
+    });
   }
 
   /* ——— Boot ——— */

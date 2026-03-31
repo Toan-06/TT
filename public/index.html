@@ -122,6 +122,64 @@
       </div>
     </section>
 
+    <!-- ===== PROMO BANNER ===== -->
+    <section class="section promo-banner" aria-labelledby="promo-title">
+      <div class="container">
+        <header class="section-head">
+          <h2 id="promo-title" class="section-title">Ưu đãi &amp; Khuyến mãi</h2>
+          <p class="section-desc">Săn deal du lịch hấp dẫn, phòng khách sạn giảm giá và tour độc quyền chỉ có tại WanderViệt.</p>
+        </header>
+        <div class="promo-grid">
+          <div class="promo-card promo-card--highlight">
+            <div class="promo-card__badge">🔥 HOT DEAL</div>
+            <div class="promo-card__img" style="background-image:url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80')"></div>
+            <div class="promo-card__body">
+              <h3 class="promo-card__title">Phú Quốc 4N3Đ</h3>
+              <p class="promo-card__desc">Resort 4 sao + vé máy bay khứ hồi — trọn gói</p>
+              <div class="promo-card__price">
+                <span class="promo-card__old">5.800.000 ₫</span>
+                <span class="promo-card__new">3.990.000 ₫</span>
+              </div>
+              <a href="#contact" class="btn btn--primary btn--small">Đặt ngay</a>
+            </div>
+          </div>
+          <div class="promo-card">
+            <div class="promo-card__badge promo-card__badge--green">🌿 PHỔ BIẾN</div>
+            <div class="promo-card__img" style="background-image:url('https://images.unsplash.com/photo-1528127269322-539801943592?w=600&q=80')"></div>
+            <div class="promo-card__body">
+              <h3 class="promo-card__title">Hội An 3N2Đ</h3>
+              <p class="promo-card__desc">Homestay phố cổ + xe đạp tham quan + bữa sáng</p>
+              <div class="promo-card__price">
+                <span class="promo-card__old">2.500.000 ₫</span>
+                <span class="promo-card__new">1.750.000 ₫</span>
+              </div>
+              <a href="#contact" class="btn btn--primary btn--small">Đặt ngay</a>
+            </div>
+          </div>
+          <div class="promo-card">
+            <div class="promo-card__badge promo-card__badge--blue">❄️ MÙA HÈ</div>
+            <div class="promo-card__img" style="background-image:url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&q=80')"></div>
+            <div class="promo-card__body">
+              <h3 class="promo-card__title">Sa Pa 5N4Đ</h3>
+              <p class="promo-card__desc">Homestay bản làng + trekking Fansipan + cáp treo</p>
+              <div class="promo-card__price">
+                <span class="promo-card__old">3.200.000 ₫</span>
+                <span class="promo-card__new">2.290.000 ₫</span>
+              </div>
+              <a href="#contact" class="btn btn--primary btn--small">Đặt ngay</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Countdown strip -->
+        <div class="promo-countdown">
+          <span class="promo-countdown__icon">⏰</span>
+          <span>Ưu đãi có hạn — <strong>kết thúc 30/04/2026</strong>. Đặt trước, hưởng giá tốt!</span>
+          <a href="#contact" class="btn btn--ghost btn--small">Tư vấn miễn phí</a>
+        </div>
+      </div>
+    </section>
+
     <section id="smart-search" class="section smart-search" aria-labelledby="smart-title">
       <div class="container">
         <header class="section-head">
@@ -302,6 +360,27 @@
       </div>
     </section>
 
+    <section class="section stats" aria-label="Thành tựu của WanderViệt">
+      <div class="container stats-grid">
+        <div class="stat-item">
+          <span class="stat-number">100K+</span>
+          <span class="stat-label">Khách hàng tin tưởng</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Điểm đến đa dạng</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">15+</span>
+          <span class="stat-label">Năm kinh nghiệm</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">4.9/5</span>
+          <span class="stat-label">Đánh giá hài lòng</span>
+        </div>
+      </div>
+    </section>
+
     <section id="reviews" class="section reviews" aria-labelledby="rev-title">
       <div class="container">
         <header class="section-head">
@@ -339,19 +418,23 @@
           <p>Để lại thông tin — chuyên gia của chúng tôi sẽ gọi lại trong 24 giờ (giờ hành chính).</p>
         </div>
         <form class="cta-form" data-contact-form>
-          <label class="field">
-            <span class="field-label">Họ tên</span>
-            <input type="text" name="name" required autocomplete="name" placeholder="Nguyễn Văn A" />
+          <label class="field field--full" style="display: flex; align-items: center; gap: 0.5rem; flex-direction: row; margin-bottom: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="chk-anonymous" style="width: 1.2rem; height: 1.2rem; margin: 0; cursor: pointer;">
+            <span style="font-size: 0.95rem; margin: 0; user-select: none;">Tôi muốn gửi phản hồi ẩn danh (Không cần Tên & Email)</span>
           </label>
-          <label class="field">
+          <label class="field" id="field-name-wrap">
+            <span class="field-label">Họ tên</span>
+            <input type="text" name="name" id="contact-name" required autocomplete="name" placeholder="Nguyễn Văn A" />
+          </label>
+          <label class="field" id="field-email-wrap">
             <span class="field-label">Email</span>
-            <input type="email" name="email" required autocomplete="email" placeholder="ban@email.com" />
+            <input type="email" name="email" id="contact-email" required autocomplete="email" placeholder="ban@email.com" />
           </label>
           <label class="field field--full">
-            <span class="field-label">Bạn muốn đi đâu? (tuỳ chọn)</span>
-            <textarea name="note" rows="3" placeholder="Ví dụ: 4 ngày ở miền Bắc, thích trekking..."></textarea>
+            <span class="field-label">Nội dung phản hồi / yêu cầu (*)</span>
+            <textarea name="message" rows="3" required placeholder="Bạn cần hỗ trợ hoặc muốn góp ý gì cho chúng tôi?"></textarea>
           </label>
-          <button type="submit" class="btn btn--primary btn--block">Gửi yêu cầu</button>
+          <button type="submit" class="btn btn--primary btn--block">Gửi Phản Hồi</button>
           <p class="form-status" data-form-status role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -480,6 +563,35 @@
       </form>
     </div>
   </div>
+
+  <!-- ===== PARTNER LOGOS ===== -->
+  <section class="partners" aria-label="Đối tác của WanderViệt">
+    <div class="container">
+      <p class="partners__label">Đối tác &amp; tin tưởng bởi</p>
+      <div class="partners__logos">
+        <div class="partner-logo">✈️ Vietnam Airlines</div>
+        <div class="partner-logo">🏨 Vinpearl Hotels</div>
+        <div class="partner-logo">🚌 Phương Trang</div>
+        <div class="partner-logo">🛡️ Bảo Việt Travel</div>
+        <div class="partner-logo">🌐 Agoda Vietnam</div>
+        <div class="partner-logo">🚢 Indochina Junk</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NEWSLETTER ===== -->
+  <section class="newsletter" aria-labelledby="news-title">
+    <div class="container newsletter-inner">
+      <div class="newsletter-content">
+        <h2 id="news-title" class="newsletter-title">Nhận tin tức &amp; Ưu đãi</h2>
+        <p class="newsletter-desc">Đăng ký để nhận những mẹo du lịch bí mật và mã giảm giá độc quyền hàng tuần.</p>
+      </div>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Email của bạn..." required aria-label="Email đăng ký tin tức" />
+        <button type="submit" class="btn btn--primary">Đăng ký</button>
+      </form>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="container footer-grid">

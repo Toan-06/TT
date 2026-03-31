@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Place = require('../models/Place');
+const Feedback = require('../models/Feedback');
 const { auth } = require('./auth');
 
 // Middleware kiểm tra quyền admin
@@ -129,6 +130,29 @@ router.delete('/places/:id', auth, adminAuth, async (req, res) => {
     const place = await Place.findOneAndDelete({ id: req.params.id });
     if (!place) return res.status(404).json({ success: false, message: 'Không tìm thấy thông tin' });
     res.json({ success: true, message: 'Đã xóa thành công' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// --- QUẢN LÝ PHẢN HỒI ---
+
+// Lấy danh sách phản hồi
+router.get('/feedbacks', auth, adminAuth, async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find().sort({ createdAt: -1 });
+    res.json({ success: true, data: feedbacks });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Xóa phản hồi
+router.delete('/feedbacks/:id', auth, adminAuth, async (req, res) => {
+  try {
+    const fb = await Feedback.findByIdAndDelete(req.params.id);
+    if (!fb) return res.status(404).json({ success: false, message: 'Không tìm thấy phản hồi' });
+    res.json({ success: true, message: 'Đã xóa phản hồi' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

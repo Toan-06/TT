@@ -43,6 +43,7 @@
           <div class="stat-card"><div class="stat-val" id="stat-users">—</div><div class="stat-label">Người dùng</div></div>
           <div class="stat-card"><div class="stat-val" id="stat-admin">—</div><div class="stat-label">Quản trị viên</div></div>
           <div class="stat-card"><div class="stat-val" id="stat-places">—</div><div class="stat-label">Điểm du lịch</div></div>
+          <div class="stat-card"><div class="stat-val" id="stat-feedbacks">—</div><div class="stat-label">Phản hồi</div></div>
         </div>
 
         <!-- Tabs -->
@@ -50,6 +51,7 @@
           <div class="auth-tabs" role="tablist">
             <button type="button" class="auth-tab is-active" data-admin-tab="users">👥 Người dùng</button>
             <button type="button" class="auth-tab" data-admin-tab="places">📍 Điểm du lịch</button>
+            <button type="button" class="auth-tab" data-admin-tab="feedbacks">💬 Phản hồi</button>
           </div>
         </div>
 
@@ -98,6 +100,28 @@
                 </tr>
               </thead>
               <tbody id="places-tbody"><tr><td colspan="6" style="text-align:center;padding:2rem">Đang tải...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Feedbacks Panel -->
+        <section id="panel-feedbacks" class="admin-panel" hidden>
+          <div class="admin-panel-header">
+            <h2 class="section-title" style="font-size:1.4rem;margin:0">Danh sách Phản hồi</h2>
+            <input type="text" id="feedback-search" class="admin-search-input" placeholder="🔍 Tìm theo nội dung, tên..." />
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Thời gian</th>
+                  <th>Người gửi</th>
+                  <th>Email</th>
+                  <th style="width: 45%;">Nội dung</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody id="feedbacks-tbody"><tr><td colspan="5" style="text-align:center;padding:2rem">Đang tải...</td></tr></tbody>
             </table>
           </div>
         </section>
@@ -173,6 +197,8 @@
             <label class="field field--full"><span class="field-label">Tags (cách nhau bằng dấu phẩy)</span><input type="text" name="tags" placeholder="biển, ẩm thực, nghỉ dưỡng" /></label>
             <label class="field field--full"><span class="field-label">Mô tả ngắn (meta)</span><input type="text" name="meta" /></label>
             <label class="field field--full"><span class="field-label">Mô tả chi tiết</span><textarea name="text" rows="3"></textarea></label>
+            <label class="field"><span class="field-label">Nguồn tham khảo (Tên)</span><input type="text" name="sourceName" placeholder="Ví dụ: Wikipedia, Cổng DL..." /></label>
+            <label class="field"><span class="field-label">Link nguồn (URL)</span><input type="url" name="sourceUrl" placeholder="https://..." /></label>
             <label class="field field--full"><span class="field-label">Mẹo di chuyển</span><input type="text" name="transportTips" /></label>
             <label class="field field--full" style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0">
               <input type="checkbox" name="top" id="chk-top" style="width:20px;height:20px" />
