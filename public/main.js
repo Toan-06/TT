@@ -274,58 +274,76 @@
 
   var loginForm = document.querySelector('[data-auth-panel="login"]');
   if (loginForm) {
-    loginForm.addEventListener("submit", function (e) {
+    loginForm.addEventListener("submit", async function (e) {
       e.preventDefault();
       var fd = new FormData(loginForm);
       var email = String(fd.get("email") || "").trim().toLowerCase();
       var password = String(fd.get("password") || "");
       var msg = loginForm.querySelector("[data-auth-msg-login]");
-      var users = getUsers();
-      var u = users.find(function (x) {
-        return x.email === email;
-      });
-      if (!u || u.password !== password) {
-        showAuthMsg(msg, "Email hoặc mật khẩu không đúng.", false);
-        return;
+      
+      try {
+        var res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, password: password })
+        });
+        var json = await res.json();
+        if (!json.success) {
+          showAuthMsg(msg, json.message || "Đăng nhập thất bại.", false);
+          return;
+        }
+        setSession(email);
+        localStorage.setItem("wander_token", json.token);
+        saveProfileForUser(email, json.user);
+        
+        showAuthMsg(msg, "Đăng nhập thành công.", true);
+        window.setTimeout(function () {
+          closeModals();
+          loginForm.reset();
+          showAuthMsg(msg, "", true);
+          refreshAuthUI();
+        }, 400);
+      } catch (err) {
+        showAuthMsg(msg, "Lỗi kết nối máy chủ.", false);
       }
-      setSession(email);
-      showAuthMsg(msg, "Đăng nhập thành công.", true);
-      window.setTimeout(function () {
-        closeModals();
-        loginForm.reset();
-        showAuthMsg(msg, "", true);
-        refreshAuthUI();
-      }, 400);
     });
   }
 
   var regForm = document.querySelector('[data-auth-panel="register"]');
   if (regForm) {
-    regForm.addEventListener("submit", function (e) {
+    regForm.addEventListener("submit", async function (e) {
       e.preventDefault();
       var fd = new FormData(regForm);
       var name = String(fd.get("name") || "").trim();
       var email = String(fd.get("email") || "").trim().toLowerCase();
       var password = String(fd.get("password") || "");
       var msg = regForm.querySelector("[data-auth-msg-register]");
-      var users = getUsers();
-      if (users.some(function (x) {
-        return x.email === email;
-      })) {
-        showAuthMsg(msg, "Email đã được đăng ký.", false);
-        return;
+      
+      try {
+        var res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: name, email: email, password: password })
+        });
+        var json = await res.json();
+        if (!json.success) {
+          showAuthMsg(msg, json.message || "Đăng ký thất bại.", false);
+          return;
+        }
+        setSession(email);
+        localStorage.setItem("wander_token", json.token);
+        saveProfileForUser(email, json.user);
+
+        showAuthMsg(msg, "Tạo tài khoản thành công. Bạn đã được đăng nhập.", true);
+        window.setTimeout(function () {
+          closeModals();
+          regForm.reset();
+          showAuthMsg(msg, "", true);
+          refreshAuthUI();
+        }, 500);
+      } catch (err) {
+        showAuthMsg(msg, "Lỗi kết nối máy chủ.", false);
       }
-      users.push({ email: email, name: name, password: password });
-      saveJSON(STORAGE.users, users);
-      setSession(email);
-      saveProfileForUser(email, { displayName: name, notes: "" });
-      showAuthMsg(msg, "Tạo tài khoản thành công. Bạn đã được đăng nhập.", true);
-      window.setTimeout(function () {
-        closeModals();
-        regForm.reset();
-        showAuthMsg(msg, "", true);
-        refreshAuthUI();
-      }, 500);
     });
   }
 
@@ -334,8 +352,10 @@
   var userToggle = document.querySelector("[data-user-toggle]");
   var userDropdown = document.querySelector("[data-user-dropdown]");
   var userInitial = document.querySelector("[data-user-initial]");
+  var userAvatarImg = document.querySelector("[data-user-avatar]");
   var userNameEl = document.querySelector("[data-user-name]");
   var openProfileBtn = document.querySelector("[data-open-profile]");
+  var adminLink = document.querySelector("[data-admin-link]");
   var logoutBtn = document.querySelector("[data-logout]");
 
   function refreshAuthUI() {
@@ -343,12 +363,29 @@
     if (sess && sess.email) {
       if (authBtn) authBtn.hidden = true;
       if (userBubble) userBubble.hidden = false;
-      var u = getUsers().find(function (x) {
-        return x.email === sess.email;
-      });
-      var prof = getProfile();
-      var dis = prof.displayName || (u && u.name) || sess.email.split("@")[0];
-      if (userInitial) userInitial.textContent = dis.charAt(0).toUpperCase();
+      var prof = getProfile() || {};
+      var dis = prof.displayName || prof.name || sess.email.split("@")[0];
+
+      // Hiển thị avatar hoặc chữ cái đầu trong nút tròn header
+      if (userAvatarImg && prof.avatar) {
+        userAvatarImg.src = prof.avatar;
+        userAvatarImg.removeAttribute('hidden');
+        userAvatarImg.style.display = 'block';
+        if (userInitial) userInitial.style.display = 'none';
+      } else {
+        if (userAvatarImg) { userAvatarImg.setAttribute('hidden', ''); userAvatarImg.style.display = 'none'; }
+        if (userInitial) {
+          userInitial.textContent = dis.charAt(0).toUpperCase();
+          userInitial.style.display = 'block';
+        }
+      }
+
+      if (adminLink && prof.isAdmin) {
+        adminLink.hidden = false;
+      } else if (adminLink) {
+        adminLink.hidden = true;
+      }
+
       if (userNameEl) {
         userNameEl.innerHTML = "";
         var nameStrong = document.createElement("strong");
@@ -368,6 +405,22 @@
     }
     updateContactPrefill();
     renderPersonalSection();
+  }
+
+  // Helper: Cập nhật preview trong modal hồ sơ
+  function applyAvatarPreview(base64) {
+    var previewImg = document.querySelector('[data-avatar-preview-img]');
+    var previewInitial = document.querySelector('[data-avatar-preview-initial]');
+    var sess = getSession();
+    var prof = getProfile() || {};
+    var dis = (prof.displayName || prof.name || (sess && sess.email ? sess.email.split('@')[0] : '')) || '?';
+    if (base64) {
+      if (previewImg) { previewImg.src = base64; previewImg.removeAttribute('hidden'); }
+      if (previewInitial) previewInitial.style.display = 'none';
+    } else {
+      if (previewImg) { previewImg.setAttribute('hidden', ''); previewImg.src = ''; }
+      if (previewInitial) { previewInitial.style.display = 'flex'; previewInitial.textContent = dis.charAt(0).toUpperCase() || '?'; }
+    }
   }
 
   function toggleUserMenu(open) {
@@ -392,37 +445,113 @@
       var f = document.querySelector("[data-profile-form]");
       if (f) {
         var p = getProfile();
-        var sess = getSession();
-        if (f.elements.displayName) f.elements.displayName.value = p.displayName || "";
+        if (f.elements.displayName) f.elements.displayName.value = p.displayName || p.name || "";
         if (f.elements.notes) f.elements.notes.value = p.notes || "";
+        if (f.elements.phone) f.elements.phone.value = p.phone || "";
+        // Reset file input & load avatar preview
+        var fileInput = f.querySelector('[data-avatar-file-input]');
+        if (fileInput) fileInput.value = '';
+        applyAvatarPreview(p.avatar || null);
       }
       openModal("profile");
     });
 
+  // File input: đọc ảnh và cập nhật preview ngay lập tức
+  var avatarFileInput = document.querySelector('[data-avatar-file-input]');
+  if (avatarFileInput) {
+    avatarFileInput.addEventListener('change', function () {
+      var file = this.files && this.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 2 MB.');
+        this.value = '';
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        applyAvatarPreview(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Nút Xóa ảnh
+  var avatarRemoveBtn = document.querySelector('[data-avatar-remove]');
+  if (avatarRemoveBtn) {
+    avatarRemoveBtn.addEventListener('click', function () {
+      var fileInput = document.querySelector('[data-avatar-file-input]');
+      if (fileInput) fileInput.value = '';
+      // Đánh dấu xóa avatar = lưu chuỗi rỗng
+      var sess = getSession();
+      if (sess && sess.email) {
+        var existing = getProfile();
+        saveProfileForUser(sess.email, Object.assign({}, existing, { avatar: '' }));
+        refreshAuthUI();
+      }
+      applyAvatarPreview(null);
+    });
+  }
+
   if (logoutBtn)
     logoutBtn.addEventListener("click", function () {
       setSession(null);
+      localStorage.removeItem("wander_token");
       toggleUserMenu(false);
       refreshAuthUI();
     });
 
   var profileForm = document.querySelector("[data-profile-form]");
   if (profileForm) {
-    profileForm.addEventListener("submit", function (e) {
+    profileForm.addEventListener("submit", async function (e) {
       e.preventDefault();
       var sess = getSession();
       if (!sess || !sess.email) return;
       var fd = new FormData(profileForm);
-      saveProfileForUser(sess.email, {
-        displayName: String(fd.get("displayName") || "").trim(),
-        notes: String(fd.get("notes") || "").trim()
-      });
-      var st = profileForm.querySelector("[data-profile-status]");
-      if (st) st.textContent = "Đã lưu hồ sơ.";
-      refreshAuthUI();
-      window.setTimeout(function () {
-        if (st) st.textContent = "";
-      }, 2500);
+
+      // Đọc ảnh từ file input (nếu có chọn file mới)
+      var fileInput = profileForm.querySelector('[data-avatar-file-input]');
+      var file = fileInput && fileInput.files && fileInput.files[0];
+
+      function finishSave(avatarDataUrl) {
+        var existing = getProfile();
+        // Nếu avatarDataUrl === undefined → giữ nguyên avatar cũ
+        var avatarVal = (avatarDataUrl !== undefined) ? avatarDataUrl : (existing.avatar || '');
+        var newProf = {
+          displayName: String(fd.get("displayName") || "").trim(),
+          notes: String(fd.get("notes") || "").trim(),
+          phone: String(fd.get("phone") || "").trim(),
+          avatar: avatarVal
+        };
+
+        var token = localStorage.getItem('wander_token');
+        if (token) {
+          // Gửi lên server (không gửi base64 lớn, chỉ gửi metadata text)
+          fetch('/api/auth/profile', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+            body: JSON.stringify({ displayName: newProf.displayName, notes: newProf.notes, phone: newProf.phone })
+          }).catch(function() {});
+        }
+
+        saveProfileForUser(sess.email, Object.assign({}, existing, newProf));
+        var st = profileForm.querySelector("[data-profile-status]");
+        if (st) { st.textContent = "✔ Đã lưu hồ sơ."; st.style.color = 'var(--accent)'; }
+        refreshAuthUI();
+        window.setTimeout(function () { if (st) { st.textContent = ""; st.style.color = ''; } }, 2500);
+      }
+
+      if (file) {
+        if (file.size > 2 * 1024 * 1024) {
+          alert('Ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 2 MB.');
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function (ev) { finishSave(ev.target.result); };
+        reader.readAsDataURL(file);
+      } else {
+        // Không chọn file mới → giữ avatar hiện tại
+        finishSave(undefined);
+      }
     });
   }
 
@@ -769,7 +898,8 @@
       escapeHtml(p.transportTips || "") +
       '</p><div class="place-detail__activities">' +
       acts +
-      '</div><div class="dest-card-actions" style="margin-top:1rem">' +
+      '</div><div id="place-map" style="height:250px; border-radius:12px; margin-top:1rem; border:1px solid rgba(148,163,184,0.2); display:none;"></div>' +
+      '<div class="dest-card-actions" style="margin-top:1rem">' +
       '<button type="button" class="btn btn--primary btn--small" data-modal-add="' +
       escapeAttr(p.id) +
       '">Thêm vào lịch</button>' +
@@ -808,6 +938,55 @@
       renderPersonalSection();
     });
     openModal("place");
+    
+    // Tự động khởi tạo bản đồ
+    setTimeout(function() {
+      var mapEl = document.getElementById("place-map");
+      if (!mapEl || !p.lat || !p.lng || typeof L === 'undefined') return;
+      mapEl.style.display = "block";
+      
+      if (window._placeMapInstance) {
+        window._placeMapInstance.remove();
+        window._placeMapInstance = null;
+      }
+      
+      window._placeMapInstance = L.map("place-map").setView([p.lat, p.lng], 13);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(window._placeMapInstance);
+      
+      var destMarker = L.marker([p.lat, p.lng]).bindPopup('<b>' + escapeHtml(p.name) + '</b><br>Điểm đến').addTo(window._placeMapInstance);
+      
+      // Định vị người dùng (Geolocation API)
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          var userLat = pos.coords.latitude;
+          var userLng = pos.coords.longitude;
+          
+          var userIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: "<div style='background-color:#0ea5e9; width:15px; height:15px; border-radius:50%; border:3px solid white; box-shadow:0 0 10px rgba(0,0,0,0.5);'></div>",
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+          });
+
+          var userMarker = L.marker([userLat, userLng], {icon: userIcon})
+            .bindPopup('Vị trí của bạn')
+            .addTo(window._placeMapInstance);
+            
+          userMarker.openPopup();
+          
+          var polyline = L.polyline([ [userLat, userLng], [p.lat, p.lng] ], {
+            color: 'var(--accent)', weight: 3, dashArray: '5, 10'
+          }).addTo(window._placeMapInstance);
+          
+          window._placeMapInstance.fitBounds(polyline.getBounds(), { padding: [40, 40] });
+        }, function(err) {
+          console.log("Không thể lấy vị trí hiện tại:", err.message);
+        });
+      }
+      setTimeout(function() { window._placeMapInstance.invalidateSize(); }, 50);
+    }, 250);
   }
 
   function renderPersonalSection() {
@@ -1255,6 +1434,33 @@
     }, 500);
   }
 
+  /* ——— Ticker Tự Động (Destinations) ——— */
+  function initDestinationsTicker() {
+    if (!destGrid) return;
+    
+    // Bật giao diện ticker trong styles.css
+    destGrid.setAttribute('data-ticker', 'true');
+    
+    let isHovering = false;
+    destGrid.addEventListener('mouseenter', function() { isHovering = true; });
+    destGrid.addEventListener('mouseleave', function() { isHovering = false; });
+    
+    setInterval(function() {
+      // Dừng cuộn nếu người dùng đang đưa chuột vào khu vực để xem
+      if (isHovering || destGrid.scrollWidth <= destGrid.clientWidth) return;
+      
+      let nextScroll = destGrid.scrollLeft + 320; 
+      if (nextScroll + destGrid.clientWidth >= destGrid.scrollWidth - 10) {
+        nextScroll = 0; // Quay về đầu
+      }
+      
+      destGrid.scrollTo({
+        left: nextScroll,
+        behavior: 'smooth'
+      });
+    }, 4500);
+  }
+
   /* ——— Boot ——— */
   async function init() {
     // Tải dữ liệu từ MongoDB trước khi render
@@ -1263,6 +1469,7 @@
     renderDestCards();
     bindDestInteractions();
     applyDestFilters();
+    initDestinationsTicker();
     stopList = loadDraftStops();
     var draft = loadJSON(STORAGE.tripDraft, null);
     if (tripNameInput && draft && draft.name) tripNameInput.value = draft.name;

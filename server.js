@@ -15,9 +15,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 const chatRoutes = require('./routes/chat');
 const placesRoutes = require('./routes/places');
+const { router: authRoutes } = require('./routes/auth');
+const adminRoutes = require('./routes/admin');
 
 app.use('/api/chat', chatRoutes);
 app.use('/api/places', placesRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Fallback for SPA or unknown routes
 app.use((req, res) => {
