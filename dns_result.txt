@@ -1,0 +1,1 @@
+ac-qptej2q-shard-00-00.k1i808a.mongodb.net:27017,ac-qptej2q-shard-00-01.k1i808a.mongodb.net:27017,ac-qptej2q-shard-00-02.k1i808a.mongodb.net:27017|authSource=admin&replicaSet=atlas-dnqpec-shard-0

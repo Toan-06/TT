@@ -121,4 +121,33 @@ router.put('/profile', auth, async (req, res) => {
   }
 });
 
+// Đổi mật khẩu
+router.put('/password', auth, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Vui lòng nhập đầy đủ mật khẩu' });
+    }
+    
+    let user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    
+    // Kiểm tra mật khẩu cũ
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch && oldPassword !== user.password) { // Dự phòng pass lưu md5/plain-text cũ
+      return res.status(400).json({ success: false, message: 'Mật khẩu cũ không đúng' });
+    }
+
+    // Mã hóa và lưu mật khẩu mới
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    await user.save();
+    
+    res.json({ success: true, message: 'Đổi mật khẩu thành công' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = { router, auth, JWT_SECRET };

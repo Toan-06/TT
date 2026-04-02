@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Place = require('../models/Place');
+const Feedback = require('../models/Feedback');
 const { auth } = require('./auth');
 
 // Middleware kiểm tra quyền admin
@@ -50,6 +51,12 @@ router.put('/users/:id', auth, adminAuth, async (req, res) => {
     const { name, displayName, email, phone, avatar, isAdmin, notes } = req.body;
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
+    
+    // Bảo vệ: Quản trị viên không thể chỉnh sửa hoặc tước quyền của Quản trị viên khác
+    if (user.isAdmin && req.params.id !== req.user.id) {
+      return res.status(403).json({ success: false, message: 'Hệ thống cấm sửa thông tin hoặc tước quyền của Quản trị viên khác.' });
+    }
+
     if (name !== undefined) user.name = name;
     if (displayName !== undefined) user.displayName = displayName;
     if (email !== undefined) user.email = email.toLowerCase();
@@ -69,12 +76,18 @@ router.put('/users/:id', auth, adminAuth, async (req, res) => {
 // Xóa tài khoản người dùng
 router.delete('/users/:id', auth, adminAuth, async (req, res) => {
   try {
-    // Không cho phép xóa chính mình
     if (req.params.id === req.user.id) {
       return res.status(400).json({ success: false, message: 'Không thể tự xóa tài khoản của chính mình' });
     }
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
+
+    // Bảo vệ: Quản trị viên không thể bị xóa
+    if (user.isAdmin) {
+      return res.status(403).json({ success: false, message: 'Tài khoản Quản trị viên không thể bị xóa.' });
+    }
+
+    await User.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Đã xóa tài khoản thành công' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -129,6 +142,52 @@ router.delete('/places/:id', auth, adminAuth, async (req, res) => {
     const place = await Place.findOneAndDelete({ id: req.params.id });
     if (!place) return res.status(404).json({ success: false, message: 'Không tìm thấy thông tin' });
     res.json({ success: true, message: 'Đã xóa thành công' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// --- QUẢN LÝ PHẢN HỒI ---
+
+// Lấy danh sách phản hồi
+router.get('/feedbacks', auth, adminAuth, async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find().sort({ createdAt: -1 });
+    res.json({ success: true, data: feedbacks });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Xóa phản hồi
+router.delete('/feedbacks/:id', auth, adminAuth, async (req, res) => {
+  try {
+    const fb = await Feedback.findByIdAndDelete(req.params.id);
+    if (!fb) return res.status(404).json({ success: false, message: 'Không tìm thấy phản hồi' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// --- QUẢN LÝ LỊCH TRÌNH AI (ITINERARIES) ---
+const Itinerary = require('../models/Itinerary');
+
+// Lấy danh sách lịch trình AI
+router.get('/itineraries', auth, adminAuth, async (req, res) => {
+  try {
+    const itineraries = await Itinerary.find().sort({ createdAt: -1 });
+    res.json({ success: true, data: itineraries });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Xóa lịch trình
+router.delete('/itineraries/:id', auth, adminAuth, async (req, res) => {
+  try {
+    const it = await Itinerary.findByIdAndDelete(req.params.id);
+    if (!it) return res.status(404).json({ success: false, message: 'Không tìm thấy lịch trình' });
+    res.json({ success: true, message: 'Đã xóa lịch trình' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
