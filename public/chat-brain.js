@@ -9,10 +9,12 @@
 
     // Call the newly created NodeJS Express server API
     try {
+      const token = localStorage.getItem('wander_token');
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-auth-token': token || ''
         },
         body: JSON.stringify({
           message: raw,

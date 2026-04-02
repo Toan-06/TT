@@ -18,12 +18,14 @@ const placesRoutes = require('./routes/places');
 const { router: authRoutes } = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const feedbackRoutes = require('./routes/feedback');
+const plannerRoutes = require('./routes/planner');
 
 app.use('/api/chat', chatRoutes);
 app.use('/api/places', placesRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/planner', plannerRoutes);
 
 // Fallback for SPA or unknown routes
 app.use((req, res) => {

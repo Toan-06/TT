@@ -10,6 +10,7 @@
   let usersData = [];
   let placesData = [];
   let feedbacksData = [];
+  let itinerariesData = [];
 
   // --- Auth Check ---
   if (!token) {
@@ -51,6 +52,7 @@
       await loadUsers();
       await loadPlaces();
       await loadFeedbacks();
+      await loadItineraries();
       contentBox.hidden = false;
       updateStats();
     } catch (e) {
@@ -67,6 +69,9 @@
     
     const feedStat = document.getElementById('stat-feedbacks');
     if (feedStat) feedStat.textContent = feedbacksData.length;
+
+    const itinStat = document.getElementById('stat-itineraries');
+    if (itinStat) itinStat.textContent = itinerariesData.length;
   }
 
   // --- Tabs ---
@@ -485,6 +490,94 @@
         return text.includes(q);
       });
       renderFeedbacks(filtered);
+    });
+  }
+
+  // --- Itineraries ---
+  async function loadItineraries() {
+    const tbody = document.getElementById('itineraries-tbody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Đang tải...</td></tr>';
+    try {
+      const json = await apiFetch('/api/admin/itineraries');
+      if (json.success) {
+        itinerariesData = json.data;
+        renderItineraries(itinerariesData);
+      }
+    } catch (err) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:red">Lỗi tải dữ liệu</td></tr>';
+    }
+  }
+
+  function renderItineraries(itineraries) {
+    const tbody = document.getElementById('itineraries-tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+    if (itineraries.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Chưa có lịch trình AI nào được tạo</td></tr>';
+      return;
+    }
+
+    itineraries.forEach(it => {
+      const tr = document.createElement('tr');
+      const date = new Date(it.createdAt);
+      const timeStr = `${date.toLocaleDateString('vi-VN')} ${date.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'})}`;
+      
+      tr.innerHTML = `
+        <td><small style="color:var(--text-muted)">${timeStr}</small></td>
+        <td><strong>${it.destination}</strong></td>
+        <td>${it.days} Ngày</td>
+        <td>${it.budget || '—'}</td>
+        <td style="display:flex; gap: 0.5rem">
+          <button class="btn btn--ghost btn--small view-itin-btn" title="Xem JSON" data-id="${it._id}" style="border-color:var(--color-primary); color:var(--color-primary)">Xem</button>
+          <button class="btn btn--ghost btn--small delete-itin-btn" data-id="${it._id}" style="color:#f87171;border-color:rgba(248,113,113,0.4)">Xóa</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    document.querySelectorAll('.delete-itin-btn').forEach(btn => {
+      btn.addEventListener('click', async function() {
+        const id = this.getAttribute('data-id');
+        if (confirm('Bạn có chắc chắn muốn xóa lịch trình này khỏi hệ thống không?')) {
+          try {
+            const res = await apiFetch('/api/admin/itineraries/' + id, { method: 'DELETE' });
+            if (res.success) {
+              await loadItineraries();
+              updateStats();
+            } else {
+              alert('Lỗi: ' + res.message);
+            }
+          } catch (e) {
+            alert('Lỗi kết nối máy chủ');
+          }
+        }
+      });
+    });
+
+    document.querySelectorAll('.view-itin-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const it = itinerariesData.find(x => x._id === id);
+        if (it) {
+           alert("JSON Data:\\n" + JSON.stringify(it.planJson, null, 2));
+           // In future we can render it in a proper modal, for now alert is fast
+        }
+      });
+    });
+  }
+
+  const itinSearchInput = document.getElementById('itinerary-search');
+  if (itinSearchInput) {
+    itinSearchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const filtered = itinerariesData.filter(it => {
+        const text = ((it.destination || '') + ' ' + (it.budget || '')).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return text.includes(q);
+      });
+      renderItineraries(filtered);
     });
   }
 

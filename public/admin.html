@@ -41,6 +41,7 @@
           <button type="button" class="auth-tab is-active" data-admin-tab="users">👥 Người dùng</button>
           <button type="button" class="auth-tab" data-admin-tab="places">📍 Điểm du lịch</button>
           <button type="button" class="auth-tab" data-admin-tab="feedbacks">💬 Phản hồi</button>
+          <button type="button" class="auth-tab" data-admin-tab="itineraries">✨ Lịch trình AI</button>
         </nav>
       </aside>
 
@@ -69,6 +70,10 @@
             <div class="stat-card">
               <div class="stat-val" id="stat-feedbacks">—</div>
               <div class="stat-label">Phản hồi</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val" id="stat-itineraries">—</div>
+              <div class="stat-label">Lịch trình AI</div>
             </div>
           </div>
 
@@ -149,6 +154,33 @@
                   </tr>
                 </thead>
                 <tbody id="feedbacks-tbody">
+                  <tr>
+                    <td colspan="5" style="text-align:center;padding:2rem">Đang tải...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Itineraries Panel -->
+          <section id="panel-itineraries" class="admin-panel" hidden>
+            <div class="admin-panel-header">
+              <h2 class="section-title" style="font-size:1.4rem;margin:0">Lịch trình AI đã tạo</h2>
+              <input type="text" id="itinerary-search" class="admin-search-input"
+                placeholder="🔍 Tìm theo điểm đến, ngân sách..." />
+            </div>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Ngày tạo</th>
+                    <th>Điểm đến</th>
+                    <th>Số ngày</th>
+                    <th>Ngân sách</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="itineraries-tbody">
                   <tr>
                     <td colspan="5" style="text-align:center;padding:2rem">Đang tải...</td>
                   </tr>
