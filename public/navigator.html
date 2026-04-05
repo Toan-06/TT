@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Chỉ đường GPS chính xác cao — WanderViệt." />
+  <title>WanderViệt — Chỉ đường AR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="navigator.css" />
+  <link rel="stylesheet" href="voice-guide.css" />
+</head>
+
+<body>
+  <!-- GPS Loading Overlay -->
+  <div id="gps-loading-overlay" style="
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(15,23,42,0.95);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px; backdrop-filter: blur(8px);
+  ">
+    <div style="position: relative; width: 80px; height: 80px;">
+      <div style="
+        position: absolute; inset: 0; border-radius: 50%;
+        border: 3px solid rgba(59,130,246,0.2);
+        border-top-color: #3b82f6;
+        animation: spin 1s linear infinite;
+      "></div>
+      <div style="
+        position: absolute; inset: 12px; border-radius: 50%;
+        border: 2px solid rgba(16,185,129,0.2);
+        border-top-color: #10b981;
+        animation: spin 0.7s linear infinite reverse;
+      "></div>
+      <div style="
+        position: absolute; inset: 0; display: flex;
+        align-items: center; justify-content: center;
+        font-size: 1.8rem;
+      ">📡</div>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 1.1rem; font-weight: 700; color: #f8fafc; font-family: 'Outfit', sans-serif;">Đang định vị GPS...</div>
+      <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 6px;">Vui lòng cho phép truy cập vị trí</div>
+    </div>
+    <div style="
+      background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 12px; padding: 12px 20px; max-width: 280px; text-align: center;
+    ">
+      <div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.5;">
+        💡 Nếu bị hỏi quyền vị trí, vui lòng <strong style="color: #3b82f6;">cho phép</strong> để bản đồ hoạt động chính xác
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-app">
+    <!-- Header -->
+    <header class="nav-header">
+      <a href="index.html" class="back-btn" aria-label="Quay lại">
+        <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+        </svg>
+      </a>
+      <h1 class="nav-title">Chỉ đường</h1>
+      
+      <div style="display:flex; gap:8px">
+        <button id="voice-btn" class="calibrate-btn" aria-label="Bật/Tắt Giọng Nói">
+          <span id="voice-icon">🔊</span>
+        </button>
+        <button id="calibrate-btn" class="calibrate-btn" aria-label="Hiệu chỉnh la bàn">
+          <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Map Container -->
+    <div class="map-container">
+      <div id="nav-map"></div>
+
+      <div id="itinerary-banner" class="itinerary-banner glass-panel" hidden>
+         <div class="itinerary-header">
+            <span id="itinerary-progress">🧭 Điểm 1/X</span>
+            <button id="itinerary-skip-btn" class="itinerary-skip-btn" hidden>Bỏ qua</button>
+         </div>
+         <h2 id="itinerary-current-target" class="itinerary-title">Đang tới: ...</h2>
+         <p id="itinerary-next-target" class="itinerary-next">Tiếp: ...</p>
+      </div>
+
+      <!-- Turn by turn UI (hidden by default) -->
+      <div id="tbt-banner" class="tbt-banner glass-panel" hidden>
+         <div id="tbt-icon">⬆️</div>
+         <div class="tbt-content">
+            <div id="tbt-dist">-- m</div>
+            <div id="tbt-text">Tiếp tục di chuyển</div>
+         </div>
+      </div>
+      
+      <!-- Target Selection Overlay -->
+      <div id="target-selector" class="target-selector">
+        <div class="search-wrap" id="search-wrap">
+          <div class="search-box glass-panel">
+            <input type="text" id="target-input" placeholder="Tìm kiếm địa điểm..." autocomplete="off" />
+            <button id="set-target-btn" class="btn btn--primary" hidden>Đi</button>
+          </div>
+          <ul id="autocomplete-list" class="autocomplete-list glass-panel" hidden></ul>
+        </div>
+        
+        <div class="quick-targets" id="quick-targets-row">
+          <button class="chip" data-lat="21.028511" data-lng="105.804817">Hà Nội</button>
+          <button class="chip" data-lat="22.33636" data-lng="103.84378">Sapa</button>
+          <button class="chip" data-lat="16.463713" data-lng="107.590866">Huế</button>
+          <button class="chip" data-lat="16.054407" data-lng="108.202167">Đà Nẵng</button>
+        </div>
+      </div>
+
+      <!-- Nút Định tâm -->
+      <button id="recenter-btn" class="recenter-btn glass-panel" aria-label="Định tâm lại" hidden>
+        🎯 Định tâm
+      </button>
+    </div>
+
+    <!-- Họa đồ phía dưới (Google Maps style bottom panel) -->
+    <div class="dashboard-panel" id="dashboard-panel">
+      
+      <!-- Transport modes (compact) -->
+      <div class="transport-modes" id="transport-modes-panel">
+         <label class="transport-btn"><input type="radio" name="route-mode" value="foot"> 🚶 Đi bộ</label>
+         <label class="transport-btn"><input type="radio" name="route-mode" value="motorcycle" checked> 🏍️ C.máy</label>
+         <label class="transport-btn"><input type="radio" name="route-mode" value="car"> 🚗 Ô tô</label>
+         <label class="transport-btn"><input type="radio" name="route-mode" value="airplane"> ✈️ M.bay</label>
+      </div>
+
+      <div id="preview-box" class="preview-box">
+          <div class="preview-info">
+            <div id="preview-eta">-- phút</div>
+            <div id="preview-dist">-- km</div>
+          </div>
+          <button id="start-nav-btn" class="btn btn--primary btn-large" hidden>🚀 BẮT ĐẦU</button>
+          <button id="next-waypoint-btn" class="btn btn--success btn-large" hidden>⏭️ TIẾP TỤC</button>
+      </div>
+
+      <!-- Stats (hiện khi đang dẫn đường) -->
+      <div class="stats-grid" id="nav-stats">
+        <div class="stat-box">
+          <span class="stat-label">K.cách</span>
+          <span id="dtg-value" class="stat-value">--<span class="stat-unit">km</span></span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Thời gian</span>
+          <span id="eta-value" class="stat-value highlight">--<span class="stat-unit">phút</span></span>
+        </div>
+        <div class="stat-box">
+           <span class="stat-label">Tốc độ</span>
+           <span id="speed-value" class="stat-value">0<span class="stat-unit">km/h</span></span>
+        </div>
+        <!-- Nút "Đã đến nơi" thủ công (hiện khi đang điều hướng) -->
+        <button id="arrived-btn" class="btn btn--success btn-small arrived-btn" hidden>✅ Đã đến</button>
+      </div>
+      
+    <div id="status-text" class="status-msg">Đang chờ vị trí GPS...</div>
+    </div>
+  </div> <!-- end nav-app -->
+
+  <!-- Voice Guide UI -->
+  <div class="voice-guide-ui">
+    <div id="voice-indicator" class="voice-indicator">
+      <div class="voice-wave">
+        <div class="voice-bar"></div>
+        <div class="voice-bar"></div>
+        <div class="voice-bar"></div>
+        <div class="voice-bar"></div>
+        <div class="voice-bar"></div>
+      </div>
+      <span id="voice-status-text" class="voice-text">Đang nghe...</span>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="voice-helper.js"></script>
+  <script src="navigator.js"></script>
+</body>
+
+</html>

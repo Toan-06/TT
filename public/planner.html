@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WanderViệt — AI Lên Lịch Trình</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="planner.css" />
+</head>
+
+<body>
+  <!-- HEADER GIỐNG TRANG CHỦ -->
+  <header class="site-header" style="background: var(--color-surface); box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">◈</span>
+        WanderViệt
+      </a>
+      <nav id="site-nav" class="site-nav">
+        <ul class="nav-list">
+          <li><a href="index.html#destinations">Điểm đến</a></li>
+          <li><a href="index.html#itineraries">Gợi ý mẫu</a></li>
+          <li><a href="planner.html" style="color: var(--color-primary); font-weight: 700;">✨ AI Trợ lý</a></li>
+          <li><a href="my-trips.html">🎒 Chuyến đi</a></li>
+          <li><a href="index.html#experiences">Tiện ích</a></li>
+          <li><a href="index.html#reviews">Đánh giá</a></li>
+          <li><a href="index.html#contact">Ưu đãi</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 6rem; padding-bottom: 4rem;">
+    <div class="planner-container">
+      
+      <!-- FORM NHẬP LIỆU -->
+      <aside class="planner-form-card">
+        <h1 class="planner-form-title">
+          <span style="font-size: 2rem;">✨</span> Thiết Kế Lịch Trình AI
+        </h1>
+        <p style="color: #64748b; margin-bottom: 2rem; line-height: 1.5;">
+          Hệ thống sẽ thay bạn suy nghĩ, sắp xếp từng giờ ăn chơi và tính toán chi phí hợp lý nhất.
+        </p>
+
+        <form id="aiPlannerForm">
+          <div class="planner-form-group">
+            <label class="planner-form-label" for="dest">Bạn muốn đi đâu?</label>
+            <input type="text" id="dest" name="destination" class="planner-input" placeholder="VD: Đà Lạt, Phú Quốc, Hà Giang" required>
+          </div>
+
+          <div class="planner-form-group">
+            <label class="planner-form-label" for="days">Số ngày đi</label>
+            <input type="number" id="days" name="days" class="planner-input" placeholder="VD: 3" min="1" max="14" required>
+          </div>
+
+          <div class="planner-form-group">
+            <label class="planner-form-label" for="tripDate">📅 Ngày khởi hành</label>
+            <input type="date" id="tripDate" name="tripDate" class="planner-input">
+            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 0.4rem;">Khi đến ngày, WanderViệt sẽ nhắc nhở bạn! 🔔</p>
+          </div>
+
+          <div class="planner-form-group">
+            <label class="planner-form-label" for="budget">Hạn mức chi tiêu</label>
+            <select id="budget" name="budget" class="planner-input">
+              <option value="Budget / Sinh viên (Dưới 1M VNĐ)">Budget / Sinh viên (Dưới 1M VNĐ)</option>
+              <option value="Tiết kiệm / Phổ thông (1M - 3M VNĐ)">Tiết kiệm / Phổ thông (1M - 3M VNĐ)</option>
+              <option value="Trung lưu / Tiêu chuẩn (3M - 7M VNĐ)" selected>Trung lưu / Tiêu chuẩn (3M - 7M VNĐ)</option>
+              <option value="Thương gia / Cao cấp (7M - 15M VNĐ)">Thương gia / Cao cấp (7M - 15M VNĐ)</option>
+              <option value="Siêu sang / Luxury (Trên 15M VNĐ)">Siêu sang / Luxury (Trên 15M VNĐ)</option>
+            </select>
+          </div>
+
+          <div class="planner-form-group">
+            <label class="planner-form-label" for="companion">Đi cùng ai?</label>
+            <select id="companion" name="companion" class="planner-input">
+              <option value="Gia đình có trẻ nhỏ">Gia đình có trẻ nhỏ</option>
+              <option value="Cặp đôi / Vợ chồng">Cặp đôi</option>
+              <option value="Đi một mình (Solo)" selected>Đi một mình</option>
+              <option value="Nhóm bạn bè">Nhóm bạn</option>
+            </select>
+          </div>
+
+          <div class="planner-form-group">
+            <label class="planner-form-label" for="interests">Mong muốn đặc biệt</label>
+            <textarea id="interests" name="interests" class="planner-input" rows="3" placeholder="VD: Thích chụp ảnh sống ảo, cần ăn hải sản, tránh leo núi mệt..."></textarea>
+          </div>
+
+          <button type="submit" class="planner-btn" id="generateBtn">
+            ⏳ Tạo Lịch Trình Ngay
+          </button>
+        </form>
+      </aside>
+
+      <!-- KẾT QUẢ RENDER -->
+      <section class="planner-result">
+        
+        <!-- Trạng thái trống -->
+        <div id="resultPlaceholder" class="result-placeholder">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 9h-2V7h-2v5H6v2h2v5h2v-5h2v-2z"></path></svg>
+          <h2>Lịch trình của bạn sẽ xuất hiện ở đây</h2>
+          <p>Điền thông tin bên trái và nhấn Tạo để bắt đầu.</p>
+        </div>
+
+        <!-- Trạng thái loading -->
+        <div id="aiLoader" class="ai-loader">
+          <div class="ai-loader-spinner"></div>
+          <h3 style="color: var(--color-primary); margin-bottom: 0.5rem;">AI Đang Suy Nghĩ...</h3>
+          <p style="color: #64748b; text-align: center;">Đang lùng sục vé số, kiểm tra khách sạn và ráp lịch cho bạn.<br>Vui lòng đợi 5-10 giây.</p>
+        </div>
+
+        <!-- Trạng thái có kết quả -->
+        <!-- Trạng thái có kết quả -->
+        <div id="viewModeHeader" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 2rem; background: #fff; padding: 1.25rem 1.5rem; border-radius: 1rem; border: 2px solid var(--color-primary);">
+          <div>
+            <h3 style="color: var(--color-primary); margin: 0; font-size: 1.2rem;">📂 Chế độ Xem Lịch Trình đã lưu</h3>
+            <p style="margin: 0.25rem 0 0; font-size: 0.9rem; color: #64748b;">Bạn đang xem lại lịch trình từ bộ sưu tập của mình.</p>
+          </div>
+          <a href="my-trips.html" class="btn btn--ghost" style="padding: 0.5rem 1rem; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🔙 Quay lại danh sách</span>
+          </a>
+        </div>
+
+        <div id="timelineResult" style="display: none;">
+          <!-- Tabs Lịch sử phiên bản -->
+          <div id="versionTabs" style="display: flex; gap: 0.5rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.5rem;">
+            <!-- Render V1, V2... -->
+          </div>
+
+          <!-- Nội dung bản thân Timeline (Render vào đây) -->
+          <div id="timelineContent"></div>
+
+          <!-- Tương tác với KQ (Lưu Nháp) -->
+          <div style="text-align: center; margin-top: 3rem; margin-bottom: 1rem;">
+            <button type="button" id="btnSaveTrip" class="planner-btn" style="background: linear-gradient(135deg, #f43f5e, #e11d48); max-width: 300px; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 1.2rem;">
+              ♥️ Lưu Lịch Trình Này
+            </button>
+            <p id="saveTripStatus" style="color: #64748b; font-size: 0.9rem; margin-top: 0.75rem; display: none;"></p>
+          </div>
+        </div>
+
+        <!-- Khung trò chuyện để Sửa Lịch Trình (ẩn mặc định) -->
+        <div id="refineBox" style="display: none; margin-top: 2rem; background: #fff; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+          <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Không ưng ý? Góp ý để AI sửa lại:</h3>
+          <form id="refineForm" style="display: flex; gap: 0.5rem;">
+            <input type="text" id="refineInput" class="planner-input" placeholder="VD: Tôi muốn dậy muộn hơn lúc 10h, và không ăn hải sản..." required style="flex: 1;">
+            <button type="submit" class="planner-btn" style="width: auto; padding: 0.75rem 1.5rem;" id="refineBtn">Sửa lại</button>
+          </form>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <script src="planner.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chỉ Đường Giới Hạn (Google Maps API)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="directions.css" />
+</head>
+<body>
+
+  <!-- Bảng điều khiển bên trái -->
+  <aside class="sidebar">
+    <header class="header">
+      <a href="index.html" class="back-btn" aria-label="Trở về trang chủ">←</a>
+      <h1>Chỉ Đường (Google Maps API)</h1>
+    </header>
+
+    <div class="input-section">
+      <p style="font-size: 0.8rem; color: #f59e0b; margin-bottom: 0.5rem; line-height: 1.3;">
+        *Tính năng này sử dụng Google Maps API. Bạn phải cấu hình API Key trong directions-gmap.js để map xuất hiện và hoạt động.
+      </p>
+      <div class="input-group">
+        <div class="route-line"></div>
+        <div class="input-box">
+          <span class="input-icon">🔵</span>
+          <input type="text" id="origin-input" placeholder="Điểm đi (vd: Hà Nội)" autocomplete="off" />
+        </div>
+        <div class="input-box">
+          <span class="input-icon" style="color: red;">📍</span>
+          <input type="text" id="dest-input" placeholder="Điểm đến (vd: Sapa)" autocomplete="off" />
+        </div>
+      </div>
+      <button class="btn-search" id="search-btn">Tìm đường đi</button>
+      <p id="status-message"></p>
+    </div>
+
+    <!-- Chọn phương thức di chuyển -->
+    <div class="modes-section">
+      <button class="mode-btn" data-mode="WALKING" id="mode-walking">
+        <span style="font-size:1.2rem">🚶</span>
+        Đi bộ
+      </button>
+      <!-- Google hỗ trợ DRIVING (Ô tô) và TWO_WHEELER (Xe máy - ở một số nước) -->
+      <button class="mode-btn active" data-mode="DRIVING" id="mode-driving">
+        <span style="font-size:1.2rem">🚗</span>
+        Ô tô / Xe máy
+      </button>
+    </div>
+
+    <!-- Kết quả -->
+    <div class="results-section">
+      <div class="route-summary" id="route-summary">
+        <div class="summary-title" id="summary-time">-- phút</div>
+        <div class="summary-meta" id="summary-distance">-- km</div>
+        
+        <button class="btn-ai" id="ask-ai-btn">
+          ✨ Trợ lý AI Khuyên Dùng
+        </button>
+      </div>
+
+      <div class="ai-advice-box" id="ai-advice-box">
+        <!-- AI output sẽ ở đây -->
+      </div>
+    </div>
+  </aside>
+
+  <!-- Bản đồ bên phải -->
+  <div class="map-container">
+    <div id="map"></div>
+  </div>
+
+  <!-- Chèn api key Google Maps ở dưới đây (Xóa YOUR_API_KEY thay bằng mã thật) -->
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap" async defer></script> -->
+  <script>
+    // Mock for students if api key is missing
+    function initMap() {
+      // Hàm này sẽ được gmap gọi khi load xong script
+    }
+  </script>
+  <script src="voice-helper.js"></script>
+  <script src="directions-gmap.js"></script>
+</body>
+</html>

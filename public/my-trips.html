@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WanderViệt — Lịch trình của tôi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="planner.css" />
+  <link rel="stylesheet" href="voice-guide.css">
+</head>
+<body style="background-color: #f8fafc;">
+  <!-- HEADER -->
+  <header class="site-header" style="background: var(--color-surface); box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">◈</span>
+        WanderViệt
+      </a>
+      <nav id="site-nav" class="site-nav">
+        <ul class="nav-list">
+          <li><a href="index.html#destinations">Điểm đến</a></li>
+          <li><a href="index.html#itineraries">Gợi ý mẫu</a></li>
+          <li><a href="my-trips.html" style="color: var(--color-primary); font-weight: 700;">🎒 Chuyến đi</a></li>
+          <li><a href="planner.html">✨ AI trợ lý</a></li>
+          <li><a href="index.html#experiences">Tiện ích</a></li>
+          <li><a href="index.html#reviews">Đánh giá</a></li>
+          <li><a href="index.html#contact">Ưu đãi</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 8rem; padding-bottom: 4rem; max-width: 900px;">
+    <h1 style="font-size: 2.5rem; color: #0f172a; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+      🎒 Chuyến Đi Của Tôi
+    </h1>
+    
+    <div id="unauthorizedMsg" style="display: none; background: #fff; padding: 3rem; text-align: center; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+      <h2 style="margin-bottom: 1rem; color: #f43f5e;">Bạn chưa Đăng Nhập!</h2>
+      <p style="color: #64748b; margin-bottom: 2rem;">Vui lòng đăng nhập để xem lại các lịch trình bạn đã lưu.</p>
+      <a href="index.html#login" class="btn btn--primary">Quay lại Đăng nhập</a>
+    </div>
+
+    <div id="tripsContainer" style="display: none;">
+      <!-- Danh sách lịch trình -->
+      <div id="tripsList" style="display: flex; flex-direction: column; gap: 1.5rem;">
+         <p style="text-align: center; color: #64748b; margin-top: 2rem;">WanderViệt - Trải nghiệm mới cho mỗi chuyến đi ✨</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Voice AI Guide UI -->
+  <button id="voice-btn" class="voice-btn-floating pulse" title="Hỏi trợ lý ảo">
+      <span id="voice-icon">🔊</span>
+  </button>
+
+  <div id="voice-indicator" class="voice-indicator">
+      <div class="waves">
+          <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+          <div class="wave"></div><div class="wave"></div>
+      </div>
+      <div class="voice-text">
+          <span id="voice-status-text">Đang lắng nghe...</span>
+          <div id="status-text" class="voice-chat-preview"></div>
+      </div>
+  </div>
+
+  <script src="voice-helper.js"></script>
+  <script src="my-trips.js"></script>
+</body>
+</html>
